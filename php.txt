@@ -1,0 +1,26 @@
+
+<?php
+$handle = fopen("c:\\folder\\resource.txt", "r");
+?>
+
+
+array fgetcsv ( resource $handle [, int $length = 0 [, string $delimiter = "," [, string $enclosure = '"' [, string $escape = "\" ]]]] )
+example
+$data = fgetcsv($handle, 1000, ",")
+
+
+
+<?php
+$row = 1;
+if (($handle = fopen("test.csv", "r")) !== FALSE) {
+    while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+        $num = count($data);
+        echo "<p> $num полей в строке $row: <br /></p>\n";
+        $row++;
+        for ($c=0; $c < $num; $c++) {
+            echo $data[$c] . "<br />\n";
+        }
+    }
+    fclose($handle);
+}
+?>
