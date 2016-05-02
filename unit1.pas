@@ -50,17 +50,24 @@ begin
     While Not EOF(f) Do
       begin
       readln(f,LongString);
-      //ShowMessage(LongString);
-      i:=i+1;
+      //looking for code
       serv_i1:=Pos(',',LongString);
       serv_i2:=Length(LongString);
-      records_code[0]:=Copy(LongString,0,serv_i1);
-      LongString:=Copy(LongString,serv_i1,serv_i2);
-
+      records_code[i]:=Copy(LongString,0,serv_i1);
+      LongString:=Copy(LongString,serv_i1+1,serv_i2);
+      //looking for group
+      serv_i1:=Pos(',',LongString);
+      serv_i2:=Length(LongString);
+      records_group[i]:=Copy(LongString,0,serv_i1);
+      LongString:=Copy(LongString,serv_i1+1,serv_i2);
+      //looking for descryption
+      serv_i2:=Length(LongString);
+      records_descr[i]:=Copy(LongString,0,serv_i2);
+      ShowMessage(records_code[i]+records_group[i]+records_descr[i]);
+      i:=i+1;
       SetLength(records_code,  i+1);
       SetLength(records_group, i+1);
       SetLength(records_descr, i+1);
-      ShowMessage(IntToStr(serv_i1)+records_code[0]);
       end;
     CloseFile(f);
   Except
