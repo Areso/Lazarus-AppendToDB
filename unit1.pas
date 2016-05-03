@@ -30,7 +30,7 @@ implementation
 
 procedure TForm1.FormCreate(Sender: TObject);
 var
-  f: text;
+  f:             text;
   LongString:    widestring;
   records_code:  array of widestring;
   records_group: array of widestring;
@@ -38,9 +38,18 @@ var
   i:             integer; //array of records size
   serv_i1:       integer;
   serv_i2:       integer;
+  f2:            text;
+
 begin
   i:=0;
   AssignFile(f,'sample.csv');
+
+  AssignFile(f2,'settings.txt');
+  Try
+
+  Except
+
+  end;
   SetLength(records_code,  i+1);
   SetLength(records_group, i+1);
   SetLength(records_descr, i+1);
@@ -73,6 +82,7 @@ begin
   Except
     //Halt;
   end;
+
 End;
 
 end.
