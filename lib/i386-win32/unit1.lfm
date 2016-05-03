@@ -6,4 +6,12 @@ object Form1: TForm1
   Caption = 'Form1'
   OnCreate = FormCreate
   LCLVersion = '1.4.4.0'
+  object IBConnection1: TIBConnection
+    Connected = False
+    LoginPrompt = False
+    KeepConnection = False
+    LogEvents = []
+    left = 66
+    top = 72
+  end
 end

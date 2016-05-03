@@ -5,7 +5,7 @@ unit Unit1;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs;
+  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, LazUtils, LConvEncoding;
 
 type
 
@@ -21,15 +21,6 @@ type
 
 var
   Form1: TForm1;
-
-implementation
-
-{$R *.lfm}
-
-{ TForm1 }
-
-procedure TForm1.FormCreate(Sender: TObject);
-var
   f:             text;
   LongString:    widestring;
   records_code:  array of widestring;
@@ -39,6 +30,19 @@ var
   serv_i1:       integer;
   serv_i2:       integer;
   f2:            text;
+  role:          widestring;
+  lang:          widestring;
+  HostNameDB:    widestring;
+  DBName:        widestring;
+  DBUsername:    widestring;
+  DBPassword:    widestring;
+implementation
+
+{$R *.lfm}
+
+{ TForm1 }
+
+procedure TForm1.FormCreate(Sender: TObject);
 
 begin
   i:=0;
@@ -46,10 +50,21 @@ begin
 
   AssignFile(f2,'settings.txt');
   Try
-
+    reset(f2);
+    readln(f, role); //now we keep calm and load our role
+    role := UTF8BOMToUTF8(role);
+    readln(f, lang);
+    readln(f, HostNameDB);
+    readln(f, DBName);
+    readln(f, DBUsername);
+    readln(f, DBPassword);
   Except
-
+    //HALT
   end;
+  DBConnection.HostName       := HostNameDB;
+  DBConnection.DatabaseName   := DBName;
+  DBConnection.UserName       := DBUsername;
+  DBConnection.Password       := DBPassword;
   SetLength(records_code,  i+1);
   SetLength(records_group, i+1);
   SetLength(records_descr, i+1);
