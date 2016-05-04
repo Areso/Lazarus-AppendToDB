@@ -1,17 +1,17 @@
 object Form1: TForm1
-  Left = 318
+  Left = 344
   Height = 240
-  Top = 239
+  Top = 220
   Width = 320
   Caption = 'Form1'
   OnCreate = FormCreate
   LCLVersion = '1.4.4.0'
-  object IBConnection1: TIBConnection
+  object DBConnection: TIBConnection
     Connected = False
     LoginPrompt = False
     KeepConnection = False
     LogEvents = []
-    left = 66
-    top = 72
+    left = 142
+    top = 75
   end
 end

@@ -1,9 +1,23 @@
 object Form1: TForm1
-  Left = 426
+  Left = 344
   Height = 240
-  Top = 311
+  Top = 220
   Width = 320
   Caption = 'Form1'
   OnCreate = FormCreate
   LCLVersion = '1.4.4.0'
+  object DBConnection: TIBConnection
+    Connected = False
+    LoginPrompt = False
+    KeepConnection = False
+    LogEvents = []
+    left = 142
+    top = 75
+  end
+  object SQLQuery1: TSQLQuery
+    FieldDefs = <>
+    Params = <>
+    left = 67
+    top = 124
+  end
 end

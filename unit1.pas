@@ -1,3 +1,9 @@
+{
+ This is free programm under GPLv2 (or later - as option) license.
+ Authors: Anton Gladyshev
+ version 0.0.0.2 date 2016-05-04
+                     (YYYY-MM-DD)
+}
 unit Unit1;
 
 {$mode objfpc}{$H+}
@@ -5,17 +11,26 @@ unit Unit1;
 interface
 
 uses
-  Classes, SysUtils, FileUtil, Forms, Controls, Graphics, Dialogs, LazUtils, LConvEncoding;
+  Classes, SysUtils, IBConnection, sqldb, FileUtil, Forms, Controls, Graphics,
+  Dialogs, LazUtils, LConvEncoding;
+
 
 type
 
   { TForm1 }
 
   TForm1 = class(TForm)
+
+    DBConnection: TIBConnection;
+    SQLQuery1: TSQLQuery;
+    procedure reading();
+    procedure inserting();
     procedure FormCreate(Sender: TObject);
+
   private
     { private declarations }
   public
+
     { public declarations }
   end;
 
@@ -39,32 +54,10 @@ var
 implementation
 
 {$R *.lfm}
-
-{ TForm1 }
-
-procedure TForm1.FormCreate(Sender: TObject);
-
+procedure TForm1.reading();
 begin
-  i:=0;
   AssignFile(f,'sample.csv');
-
-  AssignFile(f2,'settings.txt');
-  Try
-    reset(f2);
-    readln(f, role); //now we keep calm and load our role
-    role := UTF8BOMToUTF8(role);
-    readln(f, lang);
-    readln(f, HostNameDB);
-    readln(f, DBName);
-    readln(f, DBUsername);
-    readln(f, DBPassword);
-  Except
-    //HALT
-  end;
-  DBConnection.HostName       := HostNameDB;
-  DBConnection.DatabaseName   := DBName;
-  DBConnection.UserName       := DBUsername;
-  DBConnection.Password       := DBPassword;
+  i:=0;
   SetLength(records_code,  i+1);
   SetLength(records_group, i+1);
   SetLength(records_descr, i+1);
@@ -97,8 +90,70 @@ begin
   Except
     //Halt;
   end;
+end;
 
+procedure TForm1.inserting();
+var
+  inn: integer;
+begin
+  SQLQuery1.Close;
+  SQLQuery1.SQL.Clear;
+  SQLQuery1.SQL.Text      := 'execute block as begin ';
+  for inn:=0 to inn=i do
+  begin
+    SQLQuery1.SQL.Text:=SQLQuery1.SQL.Text+ InputQuery('INSERT INTO MAIN (CODE,GROUPR,DESCRR) VALUES (')+
+    //QuotedStr() , ' - for symbol escape
+  {
+   execute block
+   as begin
+   INSERT INTO MAIN (CODE,GROUPR,DESCRR) VALUES ('1', 'two', 'qwe');
+   INSERT INTO MAIN (CODE,GROUPR,DESCRR) VALUES ('1', 'four', 'qwe');
+   INSERT INTO MAIN (CODE,GROUPR,DESCRR) VALUES ('1', 'five', 'qwe');
+   end
+  }
+  end;
+
+  //ShowMessage(SQLQuery1.SQL.Text); for debug purpose
+  DBConnection.Connected  := True;
+  // IF DataSet is open then transaction should be Commit and started again
+  If SQLTransaction1.Active Then SQLTransaction1.Commit;
+  SQLTransaction1.StartTransaction;
+  Try
+     //// try open DataSet
+     SQLQuery1.ExecSQL;
+  Except
+     // somthing goes wrong, get out of here and rollback transaction
+     SQLTransaction1.Rollback;
+  end;
+end;
+
+{ TForm1 }
+
+procedure TForm1.FormCreate(Sender: TObject);
+
+begin
+  AssignFile(f2,'settings.txt');
+  Try
+    reset(f2);
+    readln(f2, role); //now we keep calm and load our role
+    role := UTF8BOMToUTF8(role);
+    readln(f2, lang);
+    readln(f2, HostNameDB);
+    readln(f2, DBName);
+    readln(f2, DBUsername);
+    readln(f2, DBPassword);
+  Except
+    //HALT
+  end;
+  DBConnection.HostName       := HostNameDB;
+  DBConnection.DatabaseName   := DBName;
+  DBConnection.UserName       := DBUsername;
+  DBConnection.Password       := DBPassword;
+  reading();
+  inserting();
 End;
+
+
 
 end.
 

@@ -4,7 +4,7 @@
     <PathDelim Value="\"/>
     <Version Value="9"/>
     <BuildModes Active="Default"/>
-    <Units Count="3">
+    <Units Count="5">
       <Unit0>
         <Filename Value="project1.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -12,7 +12,7 @@
         <WindowIndex Value="-1"/>
         <TopLine Value="-1"/>
         <CursorPos X="-1" Y="-1"/>
-        <UsageCount Value="29"/>
+        <UsageCount Value="35"/>
       </Unit0>
       <Unit1>
         <Filename Value="unit1.pas"/>
@@ -22,21 +22,36 @@
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="Unit1"/>
         <IsVisibleTab Value="True"/>
-        <TopLine Value="20"/>
-        <CursorPos X="29" Y="34"/>
-        <UsageCount Value="29"/>
+        <TopLine Value="45"/>
+        <CursorPos X="19" Y="47"/>
+        <UsageCount Value="35"/>
         <Loaded Value="True"/>
         <LoadedDesigner Value="True"/>
       </Unit1>
       <Unit2>
         <Filename Value="unit1.lfm"/>
-        <EditorIndex Value="1"/>
-        <UsageCount Value="15"/>
+        <EditorIndex Value="3"/>
+        <UsageCount Value="18"/>
         <Loaded Value="True"/>
         <DefaultSyntaxHighlighter Value="LFM"/>
       </Unit2>
+      <Unit3>
+        <Filename Value="C:\lazarus\lcl\include\control.inc"/>
+        <EditorIndex Value="2"/>
+        <TopLine Value="3653"/>
+        <CursorPos Y="3667"/>
+        <UsageCount Value="13"/>
+        <Loaded Value="True"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="lib\i386-win32\unit1.lrs"/>
+        <EditorIndex Value="1"/>
+        <CursorPos Y="3"/>
+        <UsageCount Value="10"/>
+        <Loaded Value="True"/>
+      </Unit4>
     </Units>
-    <JumpHistory Count="10" HistoryIndex="9">
+    <JumpHistory Count="25" HistoryIndex="24">
       <Position1>
         <Filename Value="unit1.pas"/>
         <Caret Line="45" Column="7" TopLine="23"/>
@@ -75,8 +90,67 @@
       </Position9>
       <Position10>
         <Filename Value="unit1.pas"/>
-        <Caret Line="34" Column="28" TopLine="20"/>
+        <Caret Line="34" Column="29" TopLine="20"/>
       </Position10>
+      <Position11>
+        <Filename Value="unit1.pas"/>
+        <Caret Line="33" Column="29" TopLine="27"/>
+      </Position11>
+      <Position12>
+        <Filename Value="unit1.pas"/>
+        <Caret Line="67" Column="13" TopLine="63"/>
+      </Position12>
+      <Position13>
+        <Filename Value="unit1.pas"/>
+        <Caret Line="63" Column="3" TopLine="53"/>
+      </Position13>
+      <Position14>
+        <Filename Value="unit1.pas"/>
+        <Caret Line="72" Column="30" TopLine="24"/>
+      </Position14>
+      <Position15>
+        <Filename Value="unit1.pas"/>
+        <Caret Line="67" Column="3" TopLine="58"/>
+      </Position15>
+      <Position16>
+        <Filename Value="unit1.pas"/>
+        <Caret Line="18" Column="15" TopLine="8"/>
+      </Position16>
+      <Position17>
+        <Filename Value="unit1.pas"/>
+        <Caret Line="22" Column="30" TopLine="10"/>
+      </Position17>
+      <Position18>
+        <Filename Value="unit1.pas"/>
+        <Caret Line="18" Column="24" TopLine="8"/>
+      </Position18>
+      <Position19>
+        <Filename Value="unit1.pas"/>
+        <Caret Line="13" Column="20"/>
+      </Position19>
+      <Position20>
+        <Filename Value="unit1.pas"/>
+        <Caret Line="17" Column="23" TopLine="3"/>
+      </Position20>
+      <Position21>
+        <Filename Value="unit1.pas"/>
+        <Caret Line="19" Column="23" TopLine="8"/>
+      </Position21>
+      <Position22>
+        <Filename Value="unit1.pas"/>
+        <Caret Line="86" TopLine="66"/>
+      </Position22>
+      <Position23>
+        <Filename Value="unit1.pas"/>
+        <Caret Line="19" Column="24" TopLine="9"/>
+      </Position23>
+      <Position24>
+        <Filename Value="lib\i386-win32\unit1.lrs"/>
+      </Position24>
+      <Position25>
+        <Filename Value="unit1.pas"/>
+        <Caret Line="87" Column="3" TopLine="73"/>
+      </Position25>
     </JumpHistory>
   </ProjectSession>
 </CONFIG>
