@@ -1,6 +1,6 @@
 ﻿admin
 en
-192.168.112.8
-mydb
+192.168.112.54
+mydbKTRU
 SYSDBA
 masterkey

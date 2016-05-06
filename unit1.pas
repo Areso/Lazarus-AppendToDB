@@ -23,6 +23,7 @@ type
 
     DBConnection: TIBConnection;
     SQLQuery1: TSQLQuery;
+    SQLTransaction1: TSQLTransaction;
     procedure reading();
     procedure inserting();
     procedure FormCreate(Sender: TObject);
@@ -39,8 +40,8 @@ var
   f:             text;
   LongString:    widestring;
   records_code:  array of widestring;
-  records_group: array of widestring;
-  records_descr: array of widestring;
+  records_groupr:array of widestring;
+  records_descrr:array of widestring;
   i:             integer; //array of records size
   serv_i1:       integer;
   serv_i2:       integer;
@@ -58,9 +59,9 @@ procedure TForm1.reading();
 begin
   AssignFile(f,'sample.csv');
   i:=0;
-  SetLength(records_code,  i+1);
-  SetLength(records_group, i+1);
-  SetLength(records_descr, i+1);
+  SetLength(records_code,   i+1);
+  SetLength(records_groupr, i+1);
+  SetLength(records_descrr, i+1);
   Try
     // try to open file, read variables and close file
     reset(f);
@@ -70,21 +71,21 @@ begin
       //looking for code
       serv_i1:=Pos(',',LongString);
       serv_i2:=Length(LongString);
-      records_code[i]:=Copy(LongString,0,serv_i1);
+      records_code[i]:=Copy(LongString,0,serv_i1-1);
       LongString:=Copy(LongString,serv_i1+1,serv_i2);
       //looking for group
       serv_i1:=Pos(',',LongString);
       serv_i2:=Length(LongString);
-      records_group[i]:=Copy(LongString,0,serv_i1);
+      records_groupr[i]:=Copy(LongString,0,serv_i1-1);
       LongString:=Copy(LongString,serv_i1+1,serv_i2);
       //looking for descryption
       serv_i2:=Length(LongString);
-      records_descr[i]:=Copy(LongString,0,serv_i2);
-      ShowMessage(records_code[i]+records_group[i]+records_descr[i]);
+      records_descrr[i]:=Copy(LongString,0,serv_i2);
+      ShowMessage(records_code[i]+records_groupr[i]+records_descrr[i]);
       i:=i+1;
-      SetLength(records_code,  i+1);
-      SetLength(records_group, i+1);
-      SetLength(records_descr, i+1);
+      SetLength(records_code,   i+1);
+      SetLength(records_groupr, i+1);
+      SetLength(records_descrr, i+1);
       end;
     CloseFile(f);
   Except
@@ -99,9 +100,14 @@ begin
   SQLQuery1.Close;
   SQLQuery1.SQL.Clear;
   SQLQuery1.SQL.Text      := 'execute block as begin ';
-  for inn:=0 to inn=i do
+  inn:=0;
+
+  for inn:=0 to 0 do //i
   begin
-    SQLQuery1.SQL.Text:=SQLQuery1.SQL.Text+ InputQuery('INSERT INTO MAIN (CODE,GROUPR,DESCRR) VALUES (')+
+    SQLQuery1.SQL.Text := SQLQuery1.SQL.Text + 'INSERT INTO MAIN (CODE,GROUPR,DESCRR) VALUES ('
+    +records_code[inn]+','
+    +records_groupr[inn]+','
+    +records_descrr[inn]+');';
     //QuotedStr() , ' - for symbol escape
   {
    execute block
@@ -112,12 +118,14 @@ begin
    end
   }
   end;
+  SQLQuery1.SQL.Text := SQLQuery1.SQL.Text + ' end';
 
-  //ShowMessage(SQLQuery1.SQL.Text); for debug purpose
+  ShowMessage(SQLQuery1.SQL.Text);// for debug purpose
   DBConnection.Connected  := True;
   // IF DataSet is open then transaction should be Commit and started again
   If SQLTransaction1.Active Then SQLTransaction1.Commit;
   SQLTransaction1.StartTransaction;
+  {
   Try
      //// try open DataSet
      SQLQuery1.ExecSQL;
@@ -125,12 +133,12 @@ begin
      // somthing goes wrong, get out of here and rollback transaction
      SQLTransaction1.Rollback;
   end;
+  }
 end;
 
 { TForm1 }
 
 procedure TForm1.FormCreate(Sender: TObject);
-
 begin
   AssignFile(f2,'settings.txt');
   Try

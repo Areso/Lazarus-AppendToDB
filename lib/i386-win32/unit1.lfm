@@ -9,9 +9,28 @@ object Form1: TForm1
   object DBConnection: TIBConnection
     Connected = False
     LoginPrompt = False
+    DatabaseName = 'mydbKTRU'
     KeepConnection = False
+    Password = 'masterkey'
+    Transaction = SQLTransaction1
+    UserName = 'SYSDBA'
+    HostName = 'localhost'
     LogEvents = []
     left = 142
     top = 75
+  end
+  object SQLQuery1: TSQLQuery
+    FieldDefs = <>
+    Database = DBConnection
+    Transaction = SQLTransaction1
+    Params = <>
+    left = 67
+    top = 124
+  end
+  object SQLTransaction1: TSQLTransaction
+    Active = False
+    Database = DBConnection
+    left = 146
+    top = 142
   end
 end
