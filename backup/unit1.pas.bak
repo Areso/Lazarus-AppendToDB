@@ -42,6 +42,7 @@ var
   records_code:  array of widestring;
   records_groupr:array of widestring;
   records_descrr:array of widestring;
+  records_uom:   array of widestring;
   i:             integer; //array of records size
   serv_i1:       integer;
   serv_i2:       integer;
@@ -62,6 +63,7 @@ begin
   SetLength(records_code,   i+1);
   SetLength(records_groupr, i+1);
   SetLength(records_descrr, i+1);
+  SetLength(records_uom, i+1);
   Try
     // try to open file, read variables and close file
     reset(f);
@@ -78,14 +80,22 @@ begin
       serv_i2:=Length(LongString);
       records_groupr[i]:=Copy(LongString,0,serv_i1-1);
       LongString:=Copy(LongString,serv_i1+1,serv_i2);
-      //looking for descryption
+      //looking for description
+      serv_i1:=Pos(',',LongString);
       serv_i2:=Length(LongString);
-      records_descrr[i]:=Copy(LongString,0,serv_i2);
-      ShowMessage(records_code[i]+records_groupr[i]+records_descrr[i]);
+      records_descrr[i]:=Copy(LongString,0,serv_i1-1);
+      LongString:=Copy(LongString,serv_i1+1,serv_i2);
+      //looking for units of measure
+      serv_i2:=Length(LongString);
+      records_uom[i]:=Copy(LongString,0,serv_i2-1);
+
+      ShowMessage(records_code[i]+records_groupr[i]+records_descrr[i]+records_uom[i]);
+
       i:=i+1;
       SetLength(records_code,   i+1);
       SetLength(records_groupr, i+1);
       SetLength(records_descrr, i+1);
+      SetLength(records_uom,    i+1);
       end;
     CloseFile(f);
   Except
@@ -102,21 +112,13 @@ begin
   SQLQuery1.SQL.Text      := 'execute block as begin ';
   inn:=0;
 
-  for inn:=0 to 0 do //i
+  for inn:=0 to i do //i
   begin
-    SQLQuery1.SQL.Text := SQLQuery1.SQL.Text + ('INSERT INTO MAIN (CODE,GROUPR,DESCRR) VALUES ('
+    SQLQuery1.SQL.Text := SQLQuery1.SQL.Text + ' INSERT INTO MAIN (CODE,GROUPR,DESCRR,UOM) VALUES ('
     +records_code[inn]+','
     +records_groupr[inn]+','
-    +records_descrr[inn]+');';
-    //QuotedStr() , ' - for symbol escape
-  {
-   execute block
-   as begin
-   INSERT INTO MAIN (CODE,GROUPR,DESCRR) VALUES ('1', 'two', 'qwe');
-   INSERT INTO MAIN (CODE,GROUPR,DESCRR) VALUES ('1', 'four', 'qwe');
-   INSERT INTO MAIN (CODE,GROUPR,DESCRR) VALUES ('1', 'five', 'qwe');
-   end
-  }
+    +records_descrr[inn]+','
+    +records_uom[inn]+');';
   end;
   SQLQuery1.SQL.Text := SQLQuery1.SQL.Text + ' end';
 
@@ -125,7 +127,7 @@ begin
   // IF DataSet is open then transaction should be Commit and started again
   If SQLTransaction1.Active Then SQLTransaction1.Commit;
   SQLTransaction1.StartTransaction;
-  {
+
   Try
      //// try open DataSet
      SQLQuery1.ExecSQL;
@@ -133,7 +135,7 @@ begin
      // somthing goes wrong, get out of here and rollback transaction
      SQLTransaction1.Rollback;
   end;
-  }
+
 end;
 
 { TForm1 }
