@@ -106,6 +106,7 @@ end;
 procedure TForm1.inserting();
 var
   inn: integer;
+  txtt: widestring;
 begin
   SQLQuery1.Close;
   SQLQuery1.SQL.Clear;
@@ -116,13 +117,14 @@ begin
   begin
     //'' are missed in SQL query text
     SQLQuery1.SQL.Text := SQLQuery1.SQL.Text + ' INSERT INTO MAIN (CODE,GROUPR,DESCRR,UOM) VALUES ('
-    +records_code[inn]+','
-    +records_groupr[inn]+','
-    +records_descrr[inn]+','
-    +records_uom[inn]+');';
+    +''''+records_code[inn]+''''+','
+    +''''+records_groupr[inn]+''''+','
+    +''''+records_descrr[inn]+''''+','
+    +''''+records_uom[inn]+''''+');';
   end;
   SQLQuery1.SQL.Text := SQLQuery1.SQL.Text + ' end';
-
+  txtt:='qwe'+'''';
+  //ShowMessage(txtt);
   ShowMessage(SQLQuery1.SQL.Text);// for debug purpose
   DBConnection.Connected  := True;
   // IF DataSet is open then transaction should be Commit and started again
