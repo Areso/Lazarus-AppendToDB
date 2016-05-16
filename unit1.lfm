@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 344
+  Left = 74
   Height = 240
-  Top = 220
+  Top = 116
   Width = 320
   Caption = 'Form1'
   OnCreate = FormCreate
@@ -14,6 +14,7 @@ object Form1: TForm1
     Password = 'masterkey'
     Transaction = SQLTransaction1
     UserName = 'SYSDBA'
+    CharSet = 'UTF8'
     HostName = 'localhost'
     LogEvents = []
     left = 142
