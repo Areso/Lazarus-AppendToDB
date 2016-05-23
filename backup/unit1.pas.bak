@@ -48,6 +48,7 @@ var
   serv_i1:       integer;
   serv_i2:       integer;
   f2:            text;
+  f3:            text;
   role:          widestring;
   lang:          widestring;
   HostNameDB:    widestring;
@@ -59,7 +60,7 @@ implementation
 {$R *.lfm}
 procedure TForm1.reading();
 begin
-  AssignFile(f,'sample.csv');
+  AssignFile(f,'page1.csv');
   i:=0;
   SetLength(records_code,   i+1);
   SetLength(records_groupr, i+1);
@@ -90,7 +91,7 @@ begin
       serv_i2:=Length(LongString);
       records_uom[i]:=Copy(LongString,0,serv_i2-1);
 
-      ShowMessage(records_code[i]+records_groupr[i]+records_descrr[i]+records_uom[i]);
+      //ShowMessage(records_code[i]+records_groupr[i]+records_descrr[i]+records_uom[i]);
 
       i:=i+1;
       SetLength(records_code,   i+1);
@@ -102,6 +103,7 @@ begin
   Except
     //Halt;
   end;
+  ShowMessage(records_code[64000]+records_groupr[64000]+records_descrr[64000]+records_uom[64000]);
 end;
 
 procedure TForm1.inserting();
@@ -125,7 +127,8 @@ begin
   end;
   SQLQuery1.SQL.Text := SQLQuery1.SQL.Text + ' end';
   }
-  records_groupr[0]:=UTF8ToANSI('ква ква');
+//  records_groupr[0]:=UTF8ToANSI('ква ква');
+  {
   inn:=0;
   for inn:=0 to i-1 do
   begin
@@ -137,21 +140,27 @@ begin
 
   Memo1.Text := Memo1.Text+SQLQuery1.SQL.Text;
   ShowMessage(SQLQuery1.SQL.Text);// for debug purpose
+  }
+  {
   DBConnection.Connected  := True;
   // IF DataSet is open then transaction should be Commit and started again
   If SQLTransaction1.Active Then SQLTransaction1.Commit;
   SQLTransaction1.StartTransaction;
-
+  AssignFile(f3, 'query.txt');
+  Rewrite(f3);
+  Writeln(f3,SQLQuery1.SQL.Text);
+  Closefile(f3);
   Try
      //// try open DataSet
      SQLQuery1.ExecSQL;
      SQLTransaction1.Commit;
-     ShowMessage('hello');
+     ShowMessage('success!');
   Except
      // somthing goes wrong, get out of here and rollback transaction
      SQLTransaction1.Rollback;
   end;
-  end;
+  }
+  //end;
 end;
 
 { TForm1 }
