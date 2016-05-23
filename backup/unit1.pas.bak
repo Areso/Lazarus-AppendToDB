@@ -12,7 +12,7 @@ interface
 
 uses
   Classes, SysUtils, IBConnection, sqldb, FileUtil, Forms, Controls, Graphics,
-  Dialogs, LazUtils, LConvEncoding;
+  Dialogs, StdCtrls, LazUtils, LConvEncoding;
 
 
 type
@@ -22,6 +22,7 @@ type
   TForm1 = class(TForm)
 
     DBConnection: TIBConnection;
+    Memo1: TMemo;
     SQLQuery1: TSQLQuery;
     SQLTransaction1: TSQLTransaction;
     procedure reading();
@@ -134,7 +135,7 @@ begin
     +''''+records_descrr[inn]+''''+','
     +''''+records_uom[inn]+''''+');';
 
-
+  Memo1.Text := Memo1.Text+SQLQuery1.SQL.Text;
   ShowMessage(SQLQuery1.SQL.Text);// for debug purpose
   DBConnection.Connected  := True;
   // IF DataSet is open then transaction should be Commit and started again
@@ -144,7 +145,8 @@ begin
   Try
      //// try open DataSet
      SQLQuery1.ExecSQL;
-
+     SQLTransaction1.Commit;
+     ShowMessage('hello');
   Except
      // somthing goes wrong, get out of here and rollback transaction
      SQLTransaction1.Rollback;
