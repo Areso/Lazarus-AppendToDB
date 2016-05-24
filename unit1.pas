@@ -41,9 +41,9 @@ var
   f:             text;
   LongString:    widestring;
   records_code:  array of widestring;
-  records_groupr:array of widestring;
-  records_descrr:array of widestring;
-  records_uom:   array of widestring;
+  records_groupr:array of ansistring;
+  records_descrr:array of ansistring;
+  records_uom:   array of ansistring;
   i:             integer; //array of records size
   serv_i1:       integer;
   serv_i2:       integer;
@@ -60,7 +60,7 @@ implementation
 {$R *.lfm}
 procedure TForm1.reading();
 begin
-  AssignFile(f,'page1.csv');
+  AssignFile(f,'page1.txt');
   i:=0;
   SetLength(records_code,   i+1);
   SetLength(records_groupr, i+1);
@@ -69,21 +69,23 @@ begin
   Try
     // try to open file, read variables and close file
     reset(f);
-    While Not EOF(f) Do
+    While i<100 Do //Not EOF(f) Do
       begin
       readln(f,LongString);
       //looking for code
-      serv_i1:=Pos(',',LongString);
+      serv_i1:=Pos(';',LongString);
+      showmessage(IntToStr(serv_i1));
+//      serv_i1:=Pos(',',LongString);
       serv_i2:=Length(LongString);
       records_code[i]:=Copy(LongString,0,serv_i1-1);
       LongString:=Copy(LongString,serv_i1+1,serv_i2);
       //looking for group
-      serv_i1:=Pos(',',LongString);
+      serv_i1:=Pos(';',LongString);
       serv_i2:=Length(LongString);
       records_groupr[i]:=Copy(LongString,0,serv_i1-1);
       LongString:=Copy(LongString,serv_i1+1,serv_i2);
       //looking for description
-      serv_i1:=Pos(',',LongString);
+      serv_i1:=Pos(';',LongString);
       serv_i2:=Length(LongString);
       records_descrr[i]:=Copy(LongString,0,serv_i1-1);
       LongString:=Copy(LongString,serv_i1+1,serv_i2);
@@ -103,7 +105,7 @@ begin
   Except
     //Halt;
   end;
-  //ShowMessage(records_code[64000]+records_groupr[64000]+records_descrr[64000]+records_uom[64000]);
+  ShowMessage(records_code[8]+records_groupr[8]+records_descrr[8]+records_uom[8]);
 end;
 
 procedure TForm1.inserting();
