@@ -1,7 +1,7 @@
 {
  This is free programm under GPLv2 (or later - as option) license.
  Authors: Anton Gladyshev
- version 1.0.0.0 date 2016-05-25
+ version 1.0.0.1 date 2016-05-26
                      (YYYY-MM-DD)
 }
 unit Unit1;
@@ -73,11 +73,11 @@ implementation
 procedure TForm1.reading();
 begin
   FileForRead := EditFile.Text;
-  AssignFile(f_code,   FileForRead+'-code.txt');
-  AssignFile(f_groupr, FileForRead+'-groupr.txt');
-  AssignFile(f_descrr, FileForRead+'-descrr.txt');
-  AssignFile(f_uomr,   FileForRead+'-uomr.txt');
-//AssignFile(f_type,   FileForRead+'-type.txt');
+  AssignFile(f_code,   FileForRead+'-1-code.txt');
+  AssignFile(f_groupr, FileForRead+'-2-groupr.txt');
+  AssignFile(f_descrr, FileForRead+'-3-descrr.txt');
+  AssignFile(f_uomr,   FileForRead+'-4-uomr.txt');
+//AssignFile(f_type,   FileForRead+'-5-type.txt');
 
   i:=0;
   SetLength(records_code,   i+1);
@@ -169,7 +169,7 @@ var
 begin
   SQLQuery1.Close;
   SQLQuery1.SQL.Clear;
-  //SQLQuery1.SQL.Text      := 'execute block as begin ';
+  //SQLQuery1.SQL.Text := 'execute block as begin ';
   //SQLQuery1.SQL.Text := SQLQuery1.SQL.Text + ' end';
 
   If Goodies.Checked Then
@@ -182,8 +182,8 @@ begin
   inn:=0;
   for inn:=0 to i-1 do
   begin
-    SQLQuery1.SQL.Text := ' INSERT INTO MAIN (ID,CODE,GROUPR,DESCRR,UOM,INS_TYPE) VALUES ('
-    +IntToStr(inn)+','
+    SQLQuery1.SQL.Text := ' INSERT INTO MAIN (CODE,GROUPR,DESCRR,UOMR,INS_TYPE) VALUES ('
+   // +IntToStr(inn)+','
     +''''+records_code[inn]+''''+','
     +''''+records_groupr[inn]+''''+','
     +''''+records_descrr[inn]+''''+','
@@ -201,6 +201,8 @@ begin
     Except
       // somthing goes wrong, get out of here and rollback transaction
       SQLTransaction1.Rollback;
+      Memo1.Text:= Memo1.Text + ' error on record of ' + IntToStr(inn);
+      //ShowMessage('error on record of '+IntToStr(inn));
     end;
   end;
   ShowMessage('writing to DB success!');

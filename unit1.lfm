@@ -22,7 +22,9 @@ object Form1: TForm1
     Top = 67
     Width = 63
     Caption = 'Goodies'
+    Checked = True
     TabOrder = 1
+    TabStop = True
   end
   object Jobs: TRadioButton
     Left = 149
@@ -41,9 +43,9 @@ object Form1: TForm1
     TabOrder = 3
   end
   object btRead: TButton
-    Left = 16
+    Left = 232
     Height = 25
-    Top = 256
+    Top = 264
     Width = 75
     Caption = 'Read'
     OnClick = btReadClick
@@ -51,12 +53,10 @@ object Form1: TForm1
   end
   object Memo1: TMemo
     Left = 16
-    Height = 66
+    Height = 104
     Top = 144
-    Width = 286
-    Lines.Strings = (
-      'Memo1'
-    )
+    Width = 296
+    ScrollBars = ssVertical
     TabOrder = 5
   end
   object DBConnection: TIBConnection

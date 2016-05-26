@@ -8,22 +8,12 @@ object Form1: TForm1
   ClientWidth = 320
   OnCreate = FormCreate
   LCLVersion = '1.4.4.0'
-  object Memo1: TMemo
-    Left = 16
-    Height = 66
-    Top = 144
-    Width = 286
-    Lines.Strings = (
-      'Memo1'
-    )
-    TabOrder = 0
-  end
   object EditFile: TEdit
     Left = 16
     Height = 23
-    Top = 78
+    Top = 72
     Width = 80
-    TabOrder = 1
+    TabOrder = 0
     Text = 'page1'
   end
   object Goodies: TRadioButton
@@ -32,7 +22,9 @@ object Form1: TForm1
     Top = 67
     Width = 63
     Caption = 'Goodies'
-    TabOrder = 2
+    Checked = True
+    TabOrder = 1
+    TabStop = True
   end
   object Jobs: TRadioButton
     Left = 149
@@ -40,7 +32,7 @@ object Form1: TForm1
     Top = 88
     Width = 43
     Caption = 'Jobs'
-    TabOrder = 3
+    TabOrder = 2
   end
   object Services: TRadioButton
     Left = 149
@@ -48,15 +40,23 @@ object Form1: TForm1
     Top = 112
     Width = 62
     Caption = 'Services'
-    TabOrder = 4
+    TabOrder = 3
   end
   object btRead: TButton
-    Left = 16
+    Left = 232
     Height = 25
-    Top = 256
+    Top = 264
     Width = 75
     Caption = 'Read'
     OnClick = btReadClick
+    TabOrder = 4
+  end
+  object Memo1: TMemo
+    Left = 16
+    Height = 104
+    Top = 144
+    Width = 296
+    ScrollBars = ssVertical
     TabOrder = 5
   end
   object DBConnection: TIBConnection
