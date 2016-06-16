@@ -1,7 +1,7 @@
 {
  This is free programm under GPLv2 (or later - as option) license.
  Authors: Anton Gladyshev
- version 0.0.0.2 date 2016-05-04
+ version 1.0.0.1 date 2016-05-26
                      (YYYY-MM-DD)
 }
 unit Unit1;
@@ -20,11 +20,17 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
+    btRead: TButton;
 
     DBConnection: TIBConnection;
+    EditFile: TEdit;
+    Goodies: TRadioButton;
+    Jobs: TRadioButton;
     Memo1: TMemo;
+    Services: TRadioButton;
     SQLQuery1: TSQLQuery;
     SQLTransaction1: TSQLTransaction;
+    procedure btReadClick(Sender: TObject);
     procedure reading();
     procedure inserting();
     procedure FormCreate(Sender: TObject);
@@ -38,74 +44,122 @@ type
 
 var
   Form1: TForm1;
-  f:             text;
+//  f:             text;
+  f_code:        text;
+  f_groupr:      text;
+  f_descrr:      text;
+  f_uomr:        text;
   LongString:    widestring;
   records_code:  array of widestring;
   records_groupr:array of ansistring;
   records_descrr:array of ansistring;
-  records_uom:   array of ansistring;
+  records_uomr:  array of ansistring;
   i:             integer; //array of records size
   serv_i1:       integer;
   serv_i2:       integer;
-  f2:            text;
-  f3:            text;
+  f2:            text;//settings are there
+ // f3:            text;
   role:          widestring;
   lang:          widestring;
   HostNameDB:    widestring;
   DBName:        widestring;
   DBUsername:    widestring;
   DBPassword:    widestring;
+  FileForRead:   widestring;
+  ins_type:      integer;
 implementation
 
 {$R *.lfm}
 procedure TForm1.reading();
 begin
-  AssignFile(f,'page1.txt');
+  FileForRead := EditFile.Text;
+  AssignFile(f_code,   FileForRead+'-1-code.txt');
+  AssignFile(f_groupr, FileForRead+'-2-groupr.txt');
+  AssignFile(f_descrr, FileForRead+'-3-descrr.txt');
+  AssignFile(f_uomr,   FileForRead+'-4-uomr.txt');
+//AssignFile(f_type,   FileForRead+'-5-type.txt');
+
   i:=0;
   SetLength(records_code,   i+1);
   SetLength(records_groupr, i+1);
   SetLength(records_descrr, i+1);
-  SetLength(records_uom, i+1);
+  SetLength(records_uomr,   i+1);
+
+  i:=0;
   Try
     // try to open file, read variables and close file
-    reset(f);
-    While i<100 Do //Not EOF(f) Do
+    reset(f_code);
+    While Not EOF(f_code) Do
       begin
-      readln(f,LongString);
-      //looking for code
-      serv_i1:=Pos(';',LongString);
-      showmessage(IntToStr(serv_i1));
-//      serv_i1:=Pos(',',LongString);
-      serv_i2:=Length(LongString);
-      records_code[i]:=Copy(LongString,0,serv_i1-1);
-      LongString:=Copy(LongString,serv_i1+1,serv_i2);
-      //looking for group
-      serv_i1:=Pos(';',LongString);
-      serv_i2:=Length(LongString);
-      records_groupr[i]:=Copy(LongString,0,serv_i1-1);
-      LongString:=Copy(LongString,serv_i1+1,serv_i2);
-      //looking for description
-      serv_i1:=Pos(';',LongString);
-      serv_i2:=Length(LongString);
-      records_descrr[i]:=Copy(LongString,0,serv_i1-1);
-      LongString:=Copy(LongString,serv_i1+1,serv_i2);
-      //looking for units of measure
-      serv_i2:=Length(LongString);
-      records_uom[i]:=Copy(LongString,0,serv_i2-1);
-
-      //ShowMessage(records_code[i]+records_groupr[i]+records_descrr[i]+records_uom[i]);
-
+      readln(f_code,LongString);
+      records_code[i]:=LongString;
       i:=i+1;
       SetLength(records_code,   i+1);
-      SetLength(records_groupr, i+1);
-      SetLength(records_descrr, i+1);
-      SetLength(records_uom,    i+1);
       end;
-    CloseFile(f);
+    CloseFile(f_code);
   Except
     //Halt;
   end;
-  ShowMessage(records_code[8]+records_groupr[8]+records_descrr[8]+records_uom[8]);
+  //ShowMessage(IntToStr(i)+' codes');
+
+  i:=0;
+  Try
+    // try to open file, read variables and close file
+    reset(f_groupr);
+    While Not EOF(f_groupr) Do
+      begin
+      readln(f_groupr,LongString);
+      records_groupr[i]:=LongString;
+      i:=i+1;
+      SetLength(records_groupr,   i+1);
+      end;
+    CloseFile(f_groupr);
+  Except
+    //Halt;
+  end;
+  //ShowMessage(IntToStr(i)+' groupr');
+
+  i:=0;
+  Try
+    // try to open file, read variables and close file
+    reset(f_descrr);
+    While Not EOF(f_descrr) Do
+      begin
+      readln(f_descrr,LongString);
+      records_descrr[i]:=LongString;
+      i:=i+1;
+      SetLength(records_descrr,   i+1);
+      end;
+    CloseFile(f_descrr);
+  Except
+    //Halt;
+  end;
+  //ShowMessage(IntToStr(i)+' descrr');
+
+  i:=0;
+  Try
+    // try to open file, read variables and close file
+    reset(f_uomr);
+    While Not EOF(f_uomr) Do
+      begin
+      readln(f_uomr,LongString);
+      records_uomr[i]:=LongString;
+      i:=i+1;
+      SetLength(records_uomr,   i+1);
+      end;
+    CloseFile(f_uomr);
+  Except
+    //Halt;
+  end;
+  //ShowMessage(IntToStr(i)+' uomr');
+  ShowMessage('reading success!');
+  //ShowMessage(records_code[8]+records_groupr[8]+records_descrr[8]+records_uomr[8]);
+end;
+
+procedure TForm1.btReadClick(Sender: TObject);
+begin
+  reading();
+  inserting();
 end;
 
 procedure TForm1.inserting();
@@ -115,54 +169,43 @@ var
 begin
   SQLQuery1.Close;
   SQLQuery1.SQL.Clear;
-  SQLQuery1.SQL.Text      := 'execute block as begin ';
-  {
-  inn:=0;
-  for inn:=0 to i-1 do //i
-  begin
-    //'' are missed in SQL query text
-    SQLQuery1.SQL.Text := SQLQuery1.SQL.Text + ' INSERT INTO MAIN (CODE,GROUPR,DESCRR,UOM) VALUES ('
-    +''''+records_code[inn]+''''+','
-    +''''+records_groupr[inn]+''''+','
-    +''''+records_descrr[inn]+''''+','
-    +''''+records_uom[inn]+''''+');';
-  end;
-  SQLQuery1.SQL.Text := SQLQuery1.SQL.Text + ' end';
-  }
-//  records_groupr[0]:=UTF8ToANSI('ква ква');
-  {
+  //SQLQuery1.SQL.Text := 'execute block as begin ';
+  //SQLQuery1.SQL.Text := SQLQuery1.SQL.Text + ' end';
+
+  If Goodies.Checked Then
+    ins_type:=0;
+  If Jobs.Checked Then
+    ins_type:=1;
+  If Jobs.Checked Then
+    ins_type:=2;
+
   inn:=0;
   for inn:=0 to i-1 do
   begin
-    SQLQuery1.SQL.Text := ' INSERT INTO MAIN (CODE,GROUPR,DESCRR,UOM) VALUES ('
+    SQLQuery1.SQL.Text := ' INSERT INTO MAIN (CODE,GROUPR,DESCRR,UOMR,INS_TYPE) VALUES ('
+   // +IntToStr(inn)+','
     +''''+records_code[inn]+''''+','
     +''''+records_groupr[inn]+''''+','
     +''''+records_descrr[inn]+''''+','
-    +''''+records_uom[inn]+''''+');';
+    +''''+records_uomr[inn]+''''+','
+    +IntToStr(ins_type)+');';
 
-  Memo1.Text := Memo1.Text+SQLQuery1.SQL.Text;
-  ShowMessage(SQLQuery1.SQL.Text);// for debug purpose
-  }
-  {
-  DBConnection.Connected  := True;
-  // IF DataSet is open then transaction should be Commit and started again
-  If SQLTransaction1.Active Then SQLTransaction1.Commit;
-  SQLTransaction1.StartTransaction;
-  AssignFile(f3, 'query.txt');
-  Rewrite(f3);
-  Writeln(f3,SQLQuery1.SQL.Text);
-  Closefile(f3);
-  Try
-     //// try open DataSet
-     SQLQuery1.ExecSQL;
-     SQLTransaction1.Commit;
-     ShowMessage('success!');
-  Except
-     // somthing goes wrong, get out of here and rollback transaction
-     SQLTransaction1.Rollback;
+    DBConnection.Connected  := True;
+    // IF DataSet is open then transaction should be Commit and started again
+    If SQLTransaction1.Active Then SQLTransaction1.Commit;
+    SQLTransaction1.StartTransaction;
+    Try
+      //// try open DataSet
+      SQLQuery1.ExecSQL;
+      SQLTransaction1.Commit;
+    Except
+      // somthing goes wrong, get out of here and rollback transaction
+      SQLTransaction1.Rollback;
+      Memo1.Text:= Memo1.Text + ' error on record of ' + IntToStr(inn);
+      //ShowMessage('error on record of '+IntToStr(inn));
+    end;
   end;
-  }
-  //end;
+  ShowMessage('writing to DB success!');
 end;
 
 { TForm1 }
@@ -186,8 +229,7 @@ begin
   DBConnection.DatabaseName   := DBName;
   DBConnection.UserName       := DBUsername;
   DBConnection.Password       := DBPassword;
-  reading();
-  inserting();
+
 End;
 
 
