@@ -1,6 +1,6 @@
 ﻿admin
 en
 192.168.112.54
-mydbKTRU
+mydbKTRU2
 SYSDBA
 masterkey

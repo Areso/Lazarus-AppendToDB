@@ -47,7 +47,7 @@ object Form1: TForm1
     Height = 25
     Top = 264
     Width = 75
-    Caption = 'Read'
+    Caption = 'Read ''n Write'
     OnClick = btReadClick
     TabOrder = 4
   end
@@ -60,7 +60,7 @@ object Form1: TForm1
     TabOrder = 5
   end
   object DBConnection: TIBConnection
-    Connected = True
+    Connected = False
     LoginPrompt = False
     DatabaseName = 'mydbKTRU2'
     KeepConnection = False
