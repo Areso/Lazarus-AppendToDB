@@ -11,8 +11,9 @@ unit Unit1;
 interface
 
 uses
-  Classes, SysUtils, IBConnection, sqldb, FileUtil, Forms, Controls, Graphics,
-  Dialogs, StdCtrls, LazUtils, LConvEncoding;
+  Classes, SysUtils, IBConnection, sqldb, db, FileUtil, Forms, Controls,
+  Graphics, Dialogs, StdCtrls, ExtCtrls, ComCtrls, DBGrids, LazUtils,
+  LConvEncoding;
 
 
 type
@@ -21,16 +22,34 @@ type
 
   TForm1 = class(TForm)
     btRead: TButton;
+    btSearch: TButton;
+    DataSource1: TDataSource;
 
     DBConnection: TIBConnection;
-    EditFile: TEdit;
+    DBGrid1: TDBGrid;
+    Edit1: TEdit;
+    editFile: TEdit;
     Goodies: TRadioButton;
+    Goodies1: TRadioButton;
     Jobs: TRadioButton;
+    Jobs1: TRadioButton;
+    labelSearchQuery: TLabel;
+    labelFilename: TLabel;
     Memo1: TMemo;
+    PageControl1: TPageControl;
+    AllRecords1: TRadioButton;
+    ReadnInsert: TGroupBox;
+    gbSearch: TGroupBox;
     Services: TRadioButton;
+    Services1: TRadioButton;
+    tsInsert: TTabSheet;
+    tsSearch: TTabSheet;
     SQLQuery1: TSQLQuery;
     SQLTransaction1: TSQLTransaction;
+    editSearchQuery: TEdit;
     procedure btReadClick(Sender: TObject);
+    procedure btSearchClick(Sender: TObject);
+
     procedure reading();
     procedure inserting();
     procedure FormCreate(Sender: TObject);
@@ -72,7 +91,7 @@ implementation
 {$R *.lfm}
 procedure TForm1.reading();
 begin
-  FileForRead := EditFile.Text;
+  FileForRead := editFile.Text;
   AssignFile(f_code,   FileForRead+'-1-code.txt');
   AssignFile(f_groupr, FileForRead+'-2-groupr.txt');
   AssignFile(f_descrr, FileForRead+'-3-descrr.txt');
@@ -162,6 +181,41 @@ begin
   inserting();
 end;
 
+procedure TForm1.btSearchClick(Sender: TObject);
+begin
+  SQLQuery1.Close;
+  SQLQuery1.SQL.Clear;
+  //SQLQuery1.SQL.Text := 'execute block as begin ';
+  //SQLQuery1.SQL.Text := SQLQuery1.SQL.Text + ' end';
+
+  If Goodies1.Checked Then
+    ins_type:=0;
+  If Jobs1.Checked Then
+    ins_type:=1;
+  If Services1.Checked Then
+    ins_type:=2;
+  If AllRecords1.Checked Then
+    ins_type:=3;
+
+  SQLQuery1.SQL.Text := ' SELECT * FROM MAIN WHERE GROUPR LIKE '
+    +'''%'+editSearchQuery.Text+'%'''+' UNION ' +
+    ' SELECT * FROM MAIN WHERE DESCRR LIKE '
+    +'''%'+editSearchQuery.Text+'%''';
+  edit1.text:=                   SQLQuery1.SQL.Text;
+  //ShowMessage(SQLQuery1.SQL.Text);
+    DBConnection.Connected  := True;
+    // IF DataSet is open then transaction should be Commit and started again
+    If SQLTransaction1.Active Then SQLTransaction1.Commit;
+    SQLTransaction1.StartTransaction;
+    Try
+      //// try open DataSet
+      SQLQuery1.Open;
+    Except
+      // somthing goes wrong, get out of here and rollback transaction
+      SQLTransaction1.Rollback;
+    end;
+end;
+
 procedure TForm1.inserting();
 var
   inn: integer;
@@ -176,7 +230,7 @@ begin
     ins_type:=0;
   If Jobs.Checked Then
     ins_type:=1;
-  If Jobs.Checked Then
+  If Services.Checked Then
     ins_type:=2;
 
   inn:=0;
@@ -231,8 +285,6 @@ begin
   DBConnection.Password       := DBPassword;
 
 End;
-
-
 
 end.
 
