@@ -23,6 +23,7 @@ type
   TForm1 = class(TForm)
     btRead: TButton;
     btSearch: TButton;
+    Button1: TButton;
     DataSource1: TDataSource;
 
     DBConnection: TIBConnection;
@@ -42,6 +43,7 @@ type
     gbSearch: TGroupBox;
     Services: TRadioButton;
     Services1: TRadioButton;
+    tsOptions: TTabSheet;
     tsInsert: TTabSheet;
     tsSearch: TTabSheet;
     SQLQuery1: TSQLQuery;
@@ -49,6 +51,7 @@ type
     editSearchQuery: TEdit;
     procedure btReadClick(Sender: TObject);
     procedure btSearchClick(Sender: TObject);
+
 
     procedure reading();
     procedure inserting();
@@ -185,8 +188,6 @@ procedure TForm1.btSearchClick(Sender: TObject);
 begin
   SQLQuery1.Close;
   SQLQuery1.SQL.Clear;
-  //SQLQuery1.SQL.Text := 'execute block as begin ';
-  //SQLQuery1.SQL.Text := SQLQuery1.SQL.Text + ' end';
 
   If Goodies1.Checked Then
     ins_type:=0;
@@ -215,6 +216,8 @@ begin
       SQLTransaction1.Rollback;
     end;
 end;
+
+
 
 procedure TForm1.inserting();
 var

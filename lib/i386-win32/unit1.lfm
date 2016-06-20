@@ -1,20 +1,20 @@
 object Form1: TForm1
-  Left = 326
-  Height = 434
-  Top = 212
-  Width = 848
+  Left = 51
+  Height = 689
+  Top = 147
+  Width = 1010
   Caption = 'Form1'
-  ClientHeight = 434
-  ClientWidth = 848
+  ClientHeight = 689
+  ClientWidth = 1010
   OnCreate = FormCreate
   LCLVersion = '1.4.4.0'
   object PageControl1: TPageControl
     Left = 0
-    Height = 432
+    Height = 688
     Top = 0
-    Width = 799
-    ActivePage = tsSearch
-    TabIndex = 1
+    Width = 1008
+    ActivePage = TabSheet1
+    TabIndex = 2
     TabOrder = 0
     object tsInsert: TTabSheet
       Caption = 'Insert'
@@ -91,8 +91,8 @@ object Form1: TForm1
     end
     object tsSearch: TTabSheet
       Caption = 'Search'
-      ClientHeight = 404
-      ClientWidth = 791
+      ClientHeight = 660
+      ClientWidth = 1000
       object editSearchQuery: TEdit
         Left = 16
         Height = 23
@@ -162,9 +162,9 @@ object Form1: TForm1
       end
       object DBGrid1: TDBGrid
         Left = -4
-        Height = 280
+        Height = 536
         Top = 128
-        Width = 796
+        Width = 1004
         Color = clWindow
         Columns = <        
           item
@@ -194,6 +194,9 @@ object Form1: TForm1
         TabOrder = 4
         Text = 'Edit1'
       end
+    end
+    object TabSheet1: TTabSheet
+      Caption = 'TabSheet1'
     end
   end
   object DBConnection: TIBConnection
