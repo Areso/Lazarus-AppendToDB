@@ -1,9 +1,9 @@
 object Form1: TForm1
-  Left = 0
+  Left = 244
   Height = 689
-  Top = 6
+  Top = 126
   Width = 1010
-  Caption = 'Form1'
+  Caption = 'KTRU'
   ClientHeight = 689
   ClientWidth = 1010
   OnCreate = FormCreate
@@ -13,9 +13,185 @@ object Form1: TForm1
     Height = 688
     Top = 0
     Width = 1008
-    ActivePage = tsInsert
+    ActivePage = tsSearch
     TabIndex = 0
     TabOrder = 0
+    OnChange = PageControl1Change
+    object tsSearch: TTabSheet
+      Caption = 'Search'
+      ClientHeight = 660
+      ClientWidth = 1000
+      object editSearchQuery: TEdit
+        Left = 16
+        Height = 23
+        Top = 48
+        Width = 289
+        TabOrder = 0
+      end
+      object labelSearchQuery: TLabel
+        Left = 16
+        Height = 15
+        Top = 24
+        Width = 68
+        Caption = 'Search query'
+        ParentColor = False
+      end
+      object gbSearch: TGroupBox
+        Left = 344
+        Height = 114
+        Top = 0
+        Width = 153
+        Caption = 'Categories'
+        ClientHeight = 94
+        ClientWidth = 149
+        TabOrder = 1
+        object rbSGoodies: TRadioButton
+          Left = 15
+          Height = 19
+          Top = 24
+          Width = 63
+          Caption = 'Goodies'
+          TabOrder = 0
+        end
+        object rbSJobs: TRadioButton
+          Left = 15
+          Height = 19
+          Top = 48
+          Width = 43
+          Caption = 'Jobs'
+          TabOrder = 1
+        end
+        object rbSServices: TRadioButton
+          Left = 15
+          Height = 19
+          Top = 72
+          Width = 62
+          Caption = 'Services'
+          TabOrder = 2
+        end
+        object rbSAllRecords: TRadioButton
+          Left = 15
+          Height = 19
+          Top = 0
+          Width = 79
+          Caption = 'All of them'
+          Checked = True
+          TabOrder = 3
+          TabStop = True
+        end
+      end
+      object btSearch: TButton
+        Left = 16
+        Height = 25
+        Top = 86
+        Width = 91
+        Caption = 'Search'
+        OnClick = btSearchClick
+        TabOrder = 2
+      end
+      object DBGrid1: TDBGrid
+        Left = -4
+        Height = 536
+        Top = 128
+        Width = 1004
+        Color = clWindow
+        Columns = <        
+          item
+            MinSize = 132
+            MaxSize = 132
+            SizePriority = 0
+            Title.Caption = 'CODE'
+            Width = 132
+            FieldName = 'CODE'
+          end        
+          item
+            MinSize = 256
+            MaxSize = 256
+            SizePriority = 0
+            Title.Caption = 'GROUPR'
+            Width = 256
+            FieldName = 'GROUPR'
+          end        
+          item
+            MinSize = 430
+            MaxSize = 430
+            SizePriority = 0
+            Title.Caption = 'DESCRR'
+            Width = 430
+            FieldName = 'DESCRR'
+          end        
+          item
+            MinSize = 150
+            MaxSize = 150
+            SizePriority = 0
+            Title.Caption = 'UOMR'
+            Width = 150
+            FieldName = 'UOMR'
+          end>
+        DataSource = DataSource1
+        Scrollbars = ssAutoBoth
+        TabOrder = 3
+      end
+      object Edit1: TEdit
+        Left = 768
+        Height = 23
+        Top = 24
+        Width = 80
+        TabOrder = 4
+        Text = 'Edit1'
+        Visible = False
+      end
+      object gbSearch1: TGroupBox
+        Left = 512
+        Height = 114
+        Top = 0
+        Width = 153
+        ClientHeight = 94
+        ClientWidth = 149
+        TabOrder = 5
+        object rbSGoodies1: TRadioButton
+          Left = 15
+          Height = 19
+          Top = 24
+          Width = 66
+          Caption = 'GROUPR'
+          TabOrder = 0
+        end
+        object rbSJobs1: TRadioButton
+          Left = 15
+          Height = 19
+          Top = 48
+          Width = 62
+          Caption = 'DESCRR'
+          TabOrder = 1
+        end
+        object rbSAllRecords1: TRadioButton
+          Left = 15
+          Height = 19
+          Top = 0
+          Width = 79
+          Caption = 'All of them'
+          Checked = True
+          TabOrder = 2
+          TabStop = True
+        end
+      end
+      object labelStatus: TLabel
+        Left = 152
+        Height = 23
+        Top = 86
+        Width = 108
+        Caption = 'Search is going'
+        Font.CharSet = RUSSIAN_CHARSET
+        Font.Color = clRed
+        Font.Height = -19
+        Font.Name = 'Arial Narrow'
+        Font.Pitch = fpVariable
+        Font.Quality = fqDraft
+        ParentColor = False
+        ParentFont = False
+      end
+    end
     object tsInsert: TTabSheet
       Caption = 'Insert'
       ClientHeight = 660
@@ -36,7 +212,7 @@ object Form1: TForm1
         Caption = 'Filename-prefix'
         ParentColor = False
       end
-      object ReadnInsert: TGroupBox
+      object gbReadnInsert: TGroupBox
         Left = 176
         Height = 97
         Top = 16
@@ -76,7 +252,7 @@ object Form1: TForm1
         Height = 25
         Top = 368
         Width = 177
-        Caption = 'Read ''n Insert'
+        Caption = 'Read n Insert'
         OnClick = btReadClick
         TabOrder = 2
       end
@@ -93,118 +269,146 @@ object Form1: TForm1
         Height = 25
         Top = 408
         Width = 179
-        Caption = 'Button1'
+        Caption = 'Clear the database'
         TabOrder = 4
-      end
-    end
-    object tsSearch: TTabSheet
-      Caption = 'Search'
-      ClientHeight = 660
-      ClientWidth = 1000
-      object editSearchQuery: TEdit
-        Left = 16
-        Height = 23
-        Top = 48
-        Width = 289
-        TabOrder = 0
-      end
-      object labelSearchQuery: TLabel
-        Left = 16
-        Height = 15
-        Top = 24
-        Width = 92
-        Caption = 'labelSearchQuery'
-        ParentColor = False
-      end
-      object gbSearch: TGroupBox
-        Left = 320
-        Height = 106
-        Top = 8
-        Width = 153
-        ClientHeight = 86
-        ClientWidth = 149
-        TabOrder = 1
-        object Goodies1: TRadioButton
-          Left = 15
-          Height = 19
-          Top = 16
-          Width = 63
-          Caption = 'Goodies'
-          TabOrder = 0
-        end
-        object Jobs1: TRadioButton
-          Left = 15
-          Height = 19
-          Top = 40
-          Width = 43
-          Caption = 'Jobs'
-          TabOrder = 1
-        end
-        object Services1: TRadioButton
-          Left = 15
-          Height = 19
-          Top = 64
-          Width = 62
-          Caption = 'Services'
-          TabOrder = 2
-        end
-        object AllRecords1: TRadioButton
-          Left = 15
-          Height = 19
-          Top = -8
-          Width = 79
-          Caption = 'All of them'
-          Checked = True
-          TabOrder = 3
-          TabStop = True
-        end
-      end
-      object btSearch: TButton
-        Left = 232
-        Height = 25
-        Top = 88
-        Width = 75
-        Caption = 'Search'
-        OnClick = btSearchClick
-        TabOrder = 2
-      end
-      object DBGrid1: TDBGrid
-        Left = -4
-        Height = 536
-        Top = 128
-        Width = 1004
-        Color = clWindow
-        Columns = <        
-          item
-            Title.Caption = 'CODE'
-            FieldName = 'CODE'
-          end        
-          item
-            Title.Caption = 'GROUPR'
-            FieldName = 'GROUPR'
-          end        
-          item
-            Title.Caption = 'DESCRR'
-            FieldName = 'DESCRR'
-          end        
-          item
-            Title.Caption = 'UOMR'
-            FieldName = 'UOMR'
-          end>
-        DataSource = DataSource1
-        TabOrder = 3
-      end
-      object Edit1: TEdit
-        Left = 520
-        Height = 23
-        Top = 44
-        Width = 80
-        TabOrder = 4
-        Text = 'Edit1'
       end
     end
     object tsOptions: TTabSheet
       Caption = 'Options'
+      ClientHeight = 660
+      ClientWidth = 1000
+      object gbScreenSize: TGroupBox
+        Left = 24
+        Height = 186
+        Top = 30
+        Width = 169
+        Caption = 'Screen width resolution'
+        ClientHeight = 166
+        ClientWidth = 165
+        TabOrder = 0
+        object rbSZ1: TRadioButton
+          Left = 13
+          Height = 19
+          Top = 7
+          Width = 44
+          Caption = '1024'
+          Checked = True
+          OnChange = rbSZ1Change
+          TabOrder = 0
+          TabStop = True
+        end
+        object rbSZ2: TRadioButton
+          Left = 13
+          Height = 19
+          Top = 32
+          Width = 44
+          Caption = '1280'
+          OnChange = rbSZ2Change
+          TabOrder = 1
+        end
+        object rbSZ3: TRadioButton
+          Left = 13
+          Height = 19
+          Top = 56
+          Width = 73
+          Caption = '1366/1360'
+          OnChange = rbSZ3Change
+          TabOrder = 2
+        end
+        object rbSZ4: TRadioButton
+          Left = 13
+          Height = 19
+          Top = 80
+          Width = 44
+          Caption = '1920'
+          OnChange = rbSZ4Change
+          TabOrder = 3
+        end
+        object rbSZ5: TRadioButton
+          Left = 13
+          Height = 19
+          Top = 104
+          Width = 81
+          Caption = 'other width'
+          OnChange = rbSZ5Change
+          TabOrder = 4
+        end
+        object editWidth: TEdit
+          Left = 59
+          Height = 23
+          Top = 128
+          Width = 46
+          Enabled = False
+          TabOrder = 5
+          Text = '1680'
+        end
+      end
+      object gbLanguage: TGroupBox
+        Left = 216
+        Height = 186
+        Top = 30
+        Width = 168
+        Caption = 'Language'
+        ClientHeight = 166
+        ClientWidth = 164
+        TabOrder = 1
+        object rbLangRU: TRadioButton
+          Left = 13
+          Height = 19
+          Top = 8
+          Width = 60
+          Caption = 'Russian'
+          OnChange = rbLangRUChange
+          TabOrder = 0
+        end
+        object rbLangEN: TRadioButton
+          Left = 13
+          Height = 19
+          Top = 32
+          Width = 58
+          Caption = 'English'
+          Checked = True
+          OnChange = rbLangENChange
+          TabOrder = 1
+          TabStop = True
+        end
+        object rbLangKZ: TRadioButton
+          Left = 13
+          Height = 19
+          Top = 56
+          Width = 57
+          Caption = 'Kazakh'
+          OnChange = rbLangKZChange
+          TabOrder = 2
+        end
+        object rbLangOther: TRadioButton
+          Left = 13
+          Height = 19
+          Top = 104
+          Width = 118
+          Caption = 'other, 2-letter abrv'
+          OnChange = rbLangOtherChange
+          TabOrder = 3
+        end
+        object editLang: TEdit
+          Left = 59
+          Height = 23
+          Top = 128
+          Width = 46
+          Enabled = False
+          TabOrder = 4
+          Text = 'eo'
+        end
+      end
+      object btSaveSettings: TButton
+        Left = 216
+        Height = 25
+        Top = 232
+        Width = 168
+        Caption = 'Apply and Save'
+        OnClick = btSaveSettingsClick
+        TabOrder = 2
+      end
     end
   end
   object DBConnection: TIBConnection

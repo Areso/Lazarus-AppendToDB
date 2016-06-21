@@ -1,8 +1,8 @@
 {
  This is free programm under GPLv2 (or later - as option) license.
  Authors: Anton Gladyshev
- version 1.0.0.2 date 2016-06-17
-                     (YYYY-MM-DD)
+ version 1.0.0.4, date 2016-06-21
+                      (YYYY-MM-DD)
 }
 unit Unit1;
 
@@ -24,25 +24,43 @@ type
     btRead: TButton;
     btSearch: TButton;
     Button1: TButton;
+    btSaveSettings: TButton;
     DataSource1: TDataSource;
-
     DBConnection: TIBConnection;
     DBGrid1: TDBGrid;
     Edit1: TEdit;
+    editWidth: TEdit;
+    editLang: TEdit;
     editFile: TEdit;
+    gbSearch1: TGroupBox;
     Goodies: TRadioButton;
-    Goodies1: TRadioButton;
+    labelStatus: TLabel;
+    rbSAllRecords1: TRadioButton;
+    rbSGoodies: TRadioButton;
+    gbScreenSize: TGroupBox;
+    gbLanguage: TGroupBox;
     Jobs: TRadioButton;
-    Jobs1: TRadioButton;
+    rbSGoodies1: TRadioButton;
+    rbSJobs: TRadioButton;
     labelSearchQuery: TLabel;
     labelFilename: TLabel;
     Memo1: TMemo;
     PageControl1: TPageControl;
-    AllRecords1: TRadioButton;
-    ReadnInsert: TGroupBox;
+    rbSAllRecords: TRadioButton;
+    rbLangRU: TRadioButton;
+    rbLangEN: TRadioButton;
+    rbLangKZ: TRadioButton;
+    rbLangOther: TRadioButton;
+    rbSJobs1: TRadioButton;
+    rbSZ5: TRadioButton;
+    rbSZ1: TRadioButton;
+    rbSZ2: TRadioButton;
+    rbSZ3: TRadioButton;
+    rbSZ4: TRadioButton;
+    gbReadnInsert: TGroupBox;
     gbSearch: TGroupBox;
     Services: TRadioButton;
-    Services1: TRadioButton;
+    rbSServices: TRadioButton;
     tsOptions: TTabSheet;
     tsInsert: TTabSheet;
     tsSearch: TTabSheet;
@@ -50,9 +68,18 @@ type
     SQLTransaction1: TSQLTransaction;
     editSearchQuery: TEdit;
     procedure btReadClick(Sender: TObject);
+    procedure btSaveSettingsClick(Sender: TObject);
     procedure btSearchClick(Sender: TObject);
-
-
+    procedure PageControl1Change(Sender: TObject);
+    procedure rbLangENChange(Sender: TObject);
+    procedure rbLangKZChange(Sender: TObject);
+    procedure rbLangOtherChange(Sender: TObject);
+    procedure rbLangRUChange(Sender: TObject);
+    procedure rbSZ1Change(Sender: TObject);
+    procedure rbSZ2Change(Sender: TObject);
+    procedure rbSZ3Change(Sender: TObject);
+    procedure rbSZ4Change(Sender: TObject);
+    procedure rbSZ5Change(Sender: TObject);
     procedure reading();
     procedure inserting();
     procedure FormCreate(Sender: TObject);
@@ -60,38 +87,61 @@ type
   private
     { private declarations }
   public
-
+    procedure load_translation();
     { public declarations }
   end;
 
 var
-  Form1: TForm1;
+  Form1:          TForm1;
 //  f:             text;
-  f_code:        text;
-  f_groupr:      text;
-  f_descrr:      text;
-  f_uomr:        text;
-  LongString:    widestring;
-  records_code:  array of widestring;
-  records_groupr:array of ansistring;
-  records_descrr:array of ansistring;
-  records_uomr:  array of ansistring;
-  i:             integer; //array of records size
-  serv_i1:       integer;
-  serv_i2:       integer;
-  f2:            text;//settings are there
+  f_code:         text;
+  f_groupr:       text;
+  f_descrr:       text;
+  f_uomr:         text;
+  LongString:     widestring;
+  records_code:   array of widestring;
+  records_groupr: array of ansistring;
+  records_descrr: array of ansistring;
+  records_uomr:   array of ansistring;
+  i:              integer; //array of records size
+  cnt:            integer; //counts of translated captions
+  serv_i1:        integer;
+  serv_i2:        integer;
+  f2:             text;//settings are there
+  f_lang:         text;//translations are there
  // f3:            text;
-  role:          widestring;
-  lang:          widestring;
-  HostNameDB:    widestring;
-  DBName:        widestring;
-  DBUsername:    widestring;
-  DBPassword:    widestring;
-  FileForRead:   widestring;
-  ins_type:      integer;
+  role:           widestring;
+  HostNameDB:     widestring;
+  DBName:         widestring;
+  DBUsername:     widestring;
+  DBPassword:     widestring;
+  FileForRead:    widestring;
+  screen_res:     integer;
+  screen_res_width: integer;
+  language_rb:    integer;
+  language_str:   widestring;
+  lang:           widestring;
+  ins_type:       integer;
+  captions_local: array[0..10] of widestring; //total 10+1 lines
 implementation
 
 {$R *.lfm}
+procedure TForm1.load_translation();
+begin
+  AssignFile(f_lang, lang+'.txt');
+  Try
+    reset(f_lang);
+    While cnt<12 Do //total lines count(10+1) + 1
+    begin
+      readln(f_lang,captions_local[cnt]);
+      cnt:=cnt+1;
+    end;
+  Except
+
+  end;
+  CloseFile(f_lang);
+end;
+
 procedure TForm1.reading();
 begin
   FileForRead := editFile.Text;
@@ -184,26 +234,32 @@ begin
   inserting();
 end;
 
+procedure TForm1.btSaveSettingsClick(Sender: TObject);
+begin
+  //call form resize();
+  //call load_translation();
+end;
+
 procedure TForm1.btSearchClick(Sender: TObject);
 begin
   SQLQuery1.Close;
   SQLQuery1.SQL.Clear;
 
-  If Goodies1.Checked Then
+  If rbSGoodies.Checked Then
     ins_type:=0;
-  If Jobs1.Checked Then
+  If rbSJobs.Checked Then
     ins_type:=1;
-  If Services1.Checked Then
+  If rbSServices.Checked Then
     ins_type:=2;
-  If AllRecords1.Checked Then
+  If rbSAllRecords.Checked Then
     ins_type:=3;
 
   SQLQuery1.SQL.Text := ' SELECT * FROM MAIN WHERE GROUPR LIKE '
     +'''%'+editSearchQuery.Text+'%'''+' UNION ' +
     ' SELECT * FROM MAIN WHERE DESCRR LIKE '
     +'''%'+editSearchQuery.Text+'%''';
-  edit1.text:=                   SQLQuery1.SQL.Text;
-  //ShowMessage(SQLQuery1.SQL.Text);
+ // edit1.text:=                   SQLQuery1.SQL.Text;
+
     DBConnection.Connected  := True;
     // IF DataSet is open then transaction should be Commit and started again
     If SQLTransaction1.Active Then SQLTransaction1.Commit;
@@ -217,12 +273,82 @@ begin
     end;
 end;
 
+procedure TForm1.PageControl1Change(Sender: TObject);
+begin
+
+end;
+
+procedure TForm1.rbLangENChange(Sender: TObject);
+begin
+  if rbLangOther.Checked = False then
+  begin
+    editLang.Enabled := False;
+    lang:='en';
+  end;
+end;
+
+procedure TForm1.rbLangKZChange(Sender: TObject);
+begin
+  if rbLangOther.Checked = False then
+  begin
+    editLang.Enabled := False;
+    lang:='kz';
+  end;
+end;
+
+procedure TForm1.rbLangOtherChange(Sender: TObject);
+begin
+  if rbLangOther.Checked = True then
+  begin
+    editLang.Enabled := True;
+    lang:=editLang.Text;
+  end;
+end;
+
+procedure TForm1.rbLangRUChange(Sender: TObject);
+begin
+  if rbLangOther.Checked = False then
+  begin
+    editLang.Enabled := False;
+    lang:='ru';
+  end;
+end;
+
+procedure TForm1.rbSZ1Change(Sender: TObject);
+begin
+  if rbSZ5.Checked = False then
+    editWidth.Enabled := False;
+end;
+
+procedure TForm1.rbSZ2Change(Sender: TObject);
+begin
+  if rbSZ5.Checked = False then
+    editWidth.Enabled := False;
+end;
+
+procedure TForm1.rbSZ3Change(Sender: TObject);
+begin
+  if rbSZ5.Checked = False then
+    editWidth.Enabled := False;
+end;
+
+procedure TForm1.rbSZ4Change(Sender: TObject);
+begin
+  if rbSZ5.Checked = False then
+    editWidth.Enabled := False;
+end;
+
+procedure TForm1.rbSZ5Change(Sender: TObject);
+begin
+  if rbSZ5.Checked = True then
+    editWidth.Enabled := True;
+end;
+
 
 
 procedure TForm1.inserting();
 var
   inn: integer;
-  txtt: widestring;
 begin
   SQLQuery1.Close;
   SQLQuery1.SQL.Clear;
@@ -269,16 +395,22 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
+  //read settings
   AssignFile(f2,'settings.txt');
   Try
     reset(f2);
+    //DB settings
     readln(f2, role); //now we keep calm and load our role
     role := UTF8BOMToUTF8(role);
-    readln(f2, lang);
     readln(f2, HostNameDB);
     readln(f2, DBName);
     readln(f2, DBUsername);
     readln(f2, DBPassword);
+    //program options
+    readln(f2, screen_res);
+    readln(f2, screen_res_width);
+    readln(f2, language_rb);
+    readln(f2, language_str);
   Except
     //HALT
   end;
@@ -287,6 +419,82 @@ begin
   DBConnection.UserName       := DBUsername;
   DBConnection.Password       := DBPassword;
 
+  if screen_res = 1 then
+  begin
+    rbSZ1.Checked := True;
+    rbSZ2.Checked := False;
+    rbSZ3.Checked := False;
+    rbSZ4.Checked := False;
+    rbSZ5.Checked := False;
+  end;
+  if screen_res = 2 then
+  begin
+    rbSZ1.Checked := False;
+    rbSZ2.Checked := True;
+    rbSZ3.Checked := False;
+    rbSZ4.Checked := False;
+    rbSZ5.Checked := False;
+  end;
+  if screen_res = 3 then
+  begin
+    rbSZ1.Checked := False;
+    rbSZ2.Checked := False;
+    rbSZ3.Checked := True;
+    rbSZ4.Checked := False;
+    rbSZ5.Checked := False;
+  end;
+  if screen_res = 4 then
+  begin
+    rbSZ1.Checked := False;
+    rbSZ2.Checked := False;
+    rbSZ3.Checked := False;
+    rbSZ4.Checked := True;
+    rbSZ5.Checked := False;
+  end;
+  if screen_res = 5 then
+  begin
+    rbSZ1.Checked := False;
+    rbSZ2.Checked := False;
+    rbSZ3.Checked := False;
+    rbSZ4.Checked := False;
+    rbSZ5.Checked := True;
+  end;
+  editWidth.Text := IntToStr(screen_res_width);
+
+  if language_rb = 1 then
+  begin
+    rbLangRU.Checked    := True;
+    rbLangEN.Checked    := False;
+    rbLangKZ.Checked    := False;
+    rbLangOther.Checked := False;
+    lang:='ru';
+  end;
+  if language_rb = 2 then
+  begin
+    rbLangRU.Checked    := False;
+    rbLangEN.Checked    := True;
+    rbLangKZ.Checked    := False;
+    rbLangOther.Checked := False;
+    lang:='en';
+  end;
+  if language_rb = 3 then
+  begin
+    rbLangRU.Checked    := False;
+    rbLangEN.Checked    := False;
+    rbLangKZ.Checked    := True;
+    rbLangOther.Checked := False;
+    lang:='kz';
+  end;
+  if language_rb = 4 then
+  begin
+    rbLangRU.Checked    := False;
+    rbLangEN.Checked    := False;
+    rbLangKZ.Checked    := True;
+    rbLangOther.Checked := False;
+    lang:='kz';
+  end;
+  //call form_resizer();
+  //call load_translation();
 End;
 
 end.
