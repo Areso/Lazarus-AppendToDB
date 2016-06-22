@@ -23,17 +23,19 @@ type
   TForm1 = class(TForm)
     btRead: TButton;
     btSearch: TButton;
-    Button1: TButton;
+    btClearDB: TButton;
     btSaveSettings: TButton;
     DataSource1: TDataSource;
     DBConnection: TIBConnection;
     DBGrid1: TDBGrid;
     Edit1: TEdit;
+    editHeight: TEdit;
     editWidth: TEdit;
     editLang: TEdit;
     editFile: TEdit;
     gbSearch1: TGroupBox;
     Goodies: TRadioButton;
+    labelSymb: TLabel;
     labelStatus: TLabel;
     rbSAllRecords1: TRadioButton;
     rbSGoodies: TRadioButton;
@@ -117,12 +119,14 @@ var
   DBPassword:     widestring;
   FileForRead:    widestring;
   screen_res:     integer;
-  screen_res_width: integer;
+  screen_res_width:  integer;
+  screen_res_height: integer;
   language_rb:    integer;
   language_str:   widestring;
   lang:           widestring;
+  warning:        widestring;
   ins_type:       integer;
-  captions_local: array[0..10] of widestring; //total 10+1 lines
+  captions_local: array[0..26] of widestring; //total 26+1 lines
 implementation
 
 {$R *.lfm}
@@ -131,7 +135,7 @@ begin
   AssignFile(f_lang, lang+'.txt');
   Try
     reset(f_lang);
-    While cnt<12 Do //total lines count(10+1) + 1
+    While cnt<28 Do //total lines count(26+1) + 1
     begin
       readln(f_lang,captions_local[cnt]);
       cnt:=cnt+1;
@@ -139,6 +143,18 @@ begin
   Except
 
   end;
+  ShowMessage(captions_local[0]);
+
+  Form1.Caption                           :=  captions_local[0];
+  Form1.PageControl1.Page[1].caption      :=  captions_local[1];
+  Form1.labelFilename.Caption             :=  captions_local[2];
+  Form1.Goodies.Caption                   :=  captions_local[3];
+  Form1.Jobs.Caption                      :=  captions_local[4];
+  Form1.Services.Caption                  :=  captions_local[5];
+  Form1.btRead.Caption                    :=  captions_local[6];
+  Form1.btClearDB.Caption                 :=  captions_local[7];
+  warning                                 :=  captions_local[8];
+
   CloseFile(f_lang);
 end;
 
@@ -237,7 +253,7 @@ end;
 procedure TForm1.btSaveSettingsClick(Sender: TObject);
 begin
   //call form resize();
-  //call load_translation();
+  load_translation();
 end;
 
 procedure TForm1.btSearchClick(Sender: TObject);
@@ -317,31 +333,46 @@ end;
 procedure TForm1.rbSZ1Change(Sender: TObject);
 begin
   if rbSZ5.Checked = False then
-    editWidth.Enabled := False;
+  begin
+    editWidth.Enabled  := False;
+    editHeight.Enabled := False;
+  end;
 end;
 
 procedure TForm1.rbSZ2Change(Sender: TObject);
 begin
   if rbSZ5.Checked = False then
-    editWidth.Enabled := False;
+  begin
+    editWidth.Enabled  := False;
+    editHeight.Enabled := False;
+  end;
 end;
 
 procedure TForm1.rbSZ3Change(Sender: TObject);
 begin
   if rbSZ5.Checked = False then
-    editWidth.Enabled := False;
+  begin
+    editWidth.Enabled  := False;
+    editHeight.Enabled := False;
+  end;
 end;
 
 procedure TForm1.rbSZ4Change(Sender: TObject);
 begin
   if rbSZ5.Checked = False then
-    editWidth.Enabled := False;
+  begin
+    editWidth.Enabled  := False;
+    editHeight.Enabled := False;
+  end;
 end;
 
 procedure TForm1.rbSZ5Change(Sender: TObject);
 begin
   if rbSZ5.Checked = True then
-    editWidth.Enabled := True;
+  begin
+    editWidth.Enabled  := True;
+    editHeight.Enabled := True;
+  end;
 end;
 
 
@@ -409,6 +440,7 @@ begin
     //program options
     readln(f2, screen_res);
     readln(f2, screen_res_width);
+    readln(f2, screen_res_height);
     readln(f2, language_rb);
     readln(f2, language_str);
   Except
@@ -458,8 +490,12 @@ begin
     rbSZ3.Checked := False;
     rbSZ4.Checked := False;
     rbSZ5.Checked := True;
+    editWidth.Enabled  := True;
+    editHeight.Enabled := True;
   end;
-  editWidth.Text := IntToStr(screen_res_width);
+
+  editWidth.Text   := IntToStr(screen_res_width);
+  editHeight.Text  := IntToStr(screen_res_height);
 
   if language_rb = 1 then
   begin
@@ -489,12 +525,18 @@ begin
   begin
     rbLangRU.Checked    := False;
     rbLangEN.Checked    := False;
-    rbLangKZ.Checked    := True;
-    rbLangOther.Checked := False;
-    lang:='kz';
+    rbLangKZ.Checked    := False;
+    rbLangOther.Checked := True;
+    lang:=language_str;
   end;
+  editLang.Text := language_str;
+
+  //debug
+  ShowMessage(IntToStr(language_rb));
+  ShowMessage(lang);
+
   //call form_resizer();
-  //call load_translation();
+  load_translation();
 End;
 
 end.

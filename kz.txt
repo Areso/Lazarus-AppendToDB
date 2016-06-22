@@ -17,8 +17,8 @@ Search in
 GROUPR
 DESCRR
 Options
-Screen width resolution
-other width
+Screen resolution
+other resolution
 Languages
 Russian
 English
