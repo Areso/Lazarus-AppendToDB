@@ -1,18 +1,19 @@
 object Form1: TForm1
-  Left = 224
+  Left = 207
   Height = 689
-  Top = 141
-  Width = 1010
+  Top = 117
+  Width = 1024
   Caption = 'KTRU'
   ClientHeight = 689
-  ClientWidth = 1010
+  ClientWidth = 1024
   OnCreate = FormCreate
+  Position = poScreenCenter
   LCLVersion = '1.4.4.0'
   object PageControl1: TPageControl
     Left = 0
     Height = 688
     Top = 0
-    Width = 1008
+    Width = 1024
     ActivePage = tsSearch
     TabIndex = 0
     TabOrder = 0
@@ -20,7 +21,7 @@ object Form1: TForm1
     object tsSearch: TTabSheet
       Caption = 'Search'
       ClientHeight = 660
-      ClientWidth = 1000
+      ClientWidth = 1016
       object editSearchQuery: TEdit
         Left = 16
         Height = 23
@@ -36,7 +37,7 @@ object Form1: TForm1
         Caption = 'Search query'
         ParentColor = False
       end
-      object gbSearch: TGroupBox
+      object gbCategories: TGroupBox
         Left = 344
         Height = 114
         Top = 0
@@ -93,7 +94,7 @@ object Form1: TForm1
         Left = -4
         Height = 536
         Top = 128
-        Width = 1004
+        Width = 1024
         Color = clWindow
         Columns = <        
           item
@@ -113,11 +114,11 @@ object Form1: TForm1
             FieldName = 'GROUPR'
           end        
           item
-            MinSize = 430
-            MaxSize = 430
+            MinSize = 445
+            MaxSize = 445
             SizePriority = 0
             Title.Caption = 'DESCRR'
-            Width = 430
+            Width = 445
             FieldName = 'DESCRR'
           end        
           item
@@ -141,7 +142,7 @@ object Form1: TForm1
         Text = 'Edit1'
         Visible = False
       end
-      object gbSearch1: TGroupBox
+      object gbFields: TGroupBox
         Left = 512
         Height = 114
         Top = 0
@@ -149,7 +150,7 @@ object Form1: TForm1
         ClientHeight = 94
         ClientWidth = 149
         TabOrder = 5
-        object rbSGoodies1: TRadioButton
+        object rbGROUPR: TRadioButton
           Left = 15
           Height = 19
           Top = 24
@@ -157,7 +158,7 @@ object Form1: TForm1
           Caption = 'GROUPR'
           TabOrder = 0
         end
-        object rbSJobs1: TRadioButton
+        object rbDESCRR: TRadioButton
           Left = 15
           Height = 19
           Top = 48
@@ -165,7 +166,7 @@ object Form1: TForm1
           Caption = 'DESCRR'
           TabOrder = 1
         end
-        object rbSAllRecords1: TRadioButton
+        object rbAnywhere: TRadioButton
           Left = 15
           Height = 19
           Top = 0
@@ -195,7 +196,7 @@ object Form1: TForm1
     object tsInsert: TTabSheet
       Caption = 'Insert'
       ClientHeight = 660
-      ClientWidth = 1000
+      ClientWidth = 1016
       object editFile: TEdit
         Left = 8
         Height = 23
@@ -276,7 +277,7 @@ object Form1: TForm1
     object tsOptions: TTabSheet
       Caption = 'Options'
       ClientHeight = 660
-      ClientWidth = 1000
+      ClientWidth = 1016
       object gbScreenSize: TGroupBox
         Left = 24
         Height = 186

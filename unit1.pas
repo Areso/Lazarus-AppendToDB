@@ -33,16 +33,16 @@ type
     editWidth: TEdit;
     editLang: TEdit;
     editFile: TEdit;
-    gbSearch1: TGroupBox;
+    gbFields: TGroupBox;
     Goodies: TRadioButton;
     labelSymb: TLabel;
     labelStatus: TLabel;
-    rbSAllRecords1: TRadioButton;
+    rbAnywhere: TRadioButton;
     rbSGoodies: TRadioButton;
     gbScreenSize: TGroupBox;
     gbLanguage: TGroupBox;
     Jobs: TRadioButton;
-    rbSGoodies1: TRadioButton;
+    rbGROUPR: TRadioButton;
     rbSJobs: TRadioButton;
     labelSearchQuery: TLabel;
     labelFilename: TLabel;
@@ -53,14 +53,14 @@ type
     rbLangEN: TRadioButton;
     rbLangKZ: TRadioButton;
     rbLangOther: TRadioButton;
-    rbSJobs1: TRadioButton;
+    rbDESCRR: TRadioButton;
     rbSZ5: TRadioButton;
     rbSZ1: TRadioButton;
     rbSZ2: TRadioButton;
     rbSZ3: TRadioButton;
     rbSZ4: TRadioButton;
     gbReadnInsert: TGroupBox;
-    gbSearch: TGroupBox;
+    gbCategories: TGroupBox;
     Services: TRadioButton;
     rbSServices: TRadioButton;
     tsOptions: TTabSheet;
@@ -90,6 +90,7 @@ type
     { private declarations }
   public
     procedure load_translation();
+    procedure form_resize();
     { public declarations }
   end;
 
@@ -130,8 +131,34 @@ var
 implementation
 
 {$R *.lfm}
+procedure TForm1.form_resize();
+var
+  form_w:         integer;
+  form_h:         integer;
+  pc_w:           integer;
+  pc_h:           integer;
+  dbgrid_w:       integer;
+  dbgrid_h:       integer;
+  dbgrid_group_w: integer;
+  dbgrid_descr_w: integer;
+begin
+  if screen_res = 1 then
+  begin
+    //1024x768
+    form_w        := 1024;
+    form_h        := 768-40;      //768 - 40=728
+    pc_w          := form_w;
+    pc_h:         := form_h - 40; //728 - 40=688
+    dbgrid_w:     := form_w;
+    dbgrid_h      := pc_h - 152;  //688 -152=536
+    //code width 132,
+  end;
+end;
+
 procedure TForm1.load_translation();
 begin
+  cnt:=0;
+
   AssignFile(f_lang, lang+'.txt');
   Try
     reset(f_lang);
@@ -141,9 +168,9 @@ begin
       cnt:=cnt+1;
     end;
   Except
-
+    Showmessage('error while reading translation');
   end;
-  ShowMessage(captions_local[0]);
+  CloseFile(f_lang);
 
   Form1.Caption                           :=  captions_local[0];
   Form1.PageControl1.Page[1].caption      :=  captions_local[1];
@@ -154,8 +181,27 @@ begin
   Form1.btRead.Caption                    :=  captions_local[6];
   Form1.btClearDB.Caption                 :=  captions_local[7];
   warning                                 :=  captions_local[8];
-
-  CloseFile(f_lang);
+  Form1.PageControl1.Page[0].Caption      :=  captions_local[9];
+  Form1.labelSearchQuery.Caption          :=  captions_local[10];
+  Form1.btSearch.Caption                  :=  captions_local[11];
+  Form1.labelStatus.Caption               :=  captions_local[12];
+  Form1.gbCategories.Caption              :=  captions_local[13];
+  Form1.rbSGoodies.Caption                :=  captions_local[3];
+  Form1.rbSJobs.Caption                   :=  captions_local[4];
+  Form1.rbSServices.Caption               :=  captions_local[5];
+  Form1.rbSAllRecords.Caption             :=  captions_local[14];
+  Form1.gbFields.Caption                  :=  captions_local[15];
+  Form1.rbGROUPR.Caption                  :=  captions_local[16];
+  Form1.rbDESCRR.Caption                  :=  captions_local[17];
+  Form1.PageControl1.Page[2].Caption      :=  captions_local[18];
+  Form1.gbScreenSize.Caption              :=  captions_local[19];
+  Form1.rbSZ5.Caption                     :=  captions_local[20];
+  Form1.gbLanguage.Caption                :=  captions_local[21];
+  Form1.rbLangRU.Caption                  :=  captions_local[22];
+  Form1.rbLangEN.Caption                  :=  captions_local[23];
+  Form1.rbLangKZ.Caption                  :=  captions_local[24];
+  Form1.rbLangOther.Caption               :=  captions_local[25];
+  Form1.btSaveSettings.Caption            :=  captions_local[26];
 end;
 
 procedure TForm1.reading();
@@ -252,8 +298,56 @@ end;
 
 procedure TForm1.btSaveSettingsClick(Sender: TObject);
 begin
-  //call form resize();
+  //form resize
+  if rbSZ1.Checked = true then
+  begin
+    screen_res := 1;
+  end;
+  if rbSZ2.Checked = true then
+  begin
+    screen_res := 2;
+  end;
+  if rbSZ3.Checked = true then
+  begin
+    screen_res := 3;
+  end;
+  if rbSZ4.Checked = true then
+  begin
+    screen_res := 4;
+  end;
+  if rbSZ5.Checked = true then
+  begin
+    screen_res := 5;
+  end;
+  screen_res_width  := StrToInt(editWidth.text);
+  screen_res_height := StrToInt(editHeight.text);
+  //form_resize();
+
+  //translations
+  if rbLangRU.checked = true then
+  begin
+    language_rb := 1;
+    lang        := 'ru';
+  end;
+  if rbLangEN.checked = true then
+  begin
+    language_rb := 2;
+    lang        := 'en';
+  end;
+  if rbLangKZ.checked = true then
+  begin
+    language_rb := 3;
+    lang        := 'kz';
+  end;
+  if rbLangOther.checked = true then
+  begin
+    language_rb := 4;
+    lang        := editLang.text;
+  end;
+  language_str  := editLang.text;
   load_translation();
+
+  //save options
 end;
 
 procedure TForm1.btSearchClick(Sender: TObject);
@@ -532,8 +626,8 @@ begin
   editLang.Text := language_str;
 
   //debug
-  ShowMessage(IntToStr(language_rb));
-  ShowMessage(lang);
+  //ShowMessage(IntToStr(language_rb));
+  //ShowMessage(lang);
 
   //call form_resizer();
   load_translation();
