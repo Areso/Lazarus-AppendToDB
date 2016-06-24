@@ -1,26 +1,29 @@
 object Form1: TForm1
-  Left = 142
-  Height = 689
-  Top = 122
-  Width = 1010
+  Left = 207
+  Height = 728
+  Top = 117
+  Width = 1024
+  BorderIcons = [biSystemMenu, biMinimize]
+  BorderStyle = bsSingle
   Caption = 'KTRU'
-  ClientHeight = 689
-  ClientWidth = 1010
+  ClientHeight = 728
+  ClientWidth = 1024
   OnCreate = FormCreate
+  Position = poScreenCenter
   LCLVersion = '1.4.4.0'
   object PageControl1: TPageControl
     Left = 0
-    Height = 688
+    Height = 728
     Top = 0
-    Width = 1008
-    ActivePage = tsOptions
-    TabIndex = 2
+    Width = 1024
+    ActivePage = tsSearch
+    TabIndex = 0
     TabOrder = 0
     OnChange = PageControl1Change
     object tsSearch: TTabSheet
       Caption = 'Search'
-      ClientHeight = 660
-      ClientWidth = 1000
+      ClientHeight = 700
+      ClientWidth = 1016
       object editSearchQuery: TEdit
         Left = 16
         Height = 23
@@ -91,9 +94,9 @@ object Form1: TForm1
       end
       object DBGrid1: TDBGrid
         Left = -4
-        Height = 536
-        Top = 128
-        Width = 1004
+        Height = 584
+        Top = 120
+        Width = 1024
         Color = clWindow
         Columns = <        
           item
@@ -113,11 +116,11 @@ object Form1: TForm1
             FieldName = 'GROUPR'
           end        
           item
-            MinSize = 430
-            MaxSize = 430
+            MinSize = 445
+            MaxSize = 445
             SizePriority = 0
             Title.Caption = 'DESCRR'
-            Width = 430
+            Width = 445
             FieldName = 'DESCRR'
           end        
           item
@@ -190,12 +193,13 @@ object Form1: TForm1
         Font.Quality = fqDraft
         ParentColor = False
         ParentFont = False
+        Visible = False
       end
     end
     object tsInsert: TTabSheet
       Caption = 'Insert'
-      ClientHeight = 660
-      ClientWidth = 1000
+      ClientHeight = 700
+      ClientWidth = 1016
       object editFile: TEdit
         Left = 8
         Height = 23
@@ -275,8 +279,8 @@ object Form1: TForm1
     end
     object tsOptions: TTabSheet
       Caption = 'Options'
-      ClientHeight = 660
-      ClientWidth = 1000
+      ClientHeight = 700
+      ClientWidth = 1016
       object gbScreenSize: TGroupBox
         Left = 24
         Height = 186

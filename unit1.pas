@@ -145,14 +145,57 @@ begin
   if screen_res = 1 then
   begin
     //1024x768
-    form_w        := 1024;
-    form_h        := 768-40;      //768 - 40=728
-    pc_w          := form_w;
-    pc_h:         := form_h - 40; //728 - 40=688
-    dbgrid_w:     := form_w;
-    dbgrid_h      := pc_h - 152;  //688 -152=536
-    //code width 132,
+    //sizes
+    form_w          := 1024-20;
+    form_h          := 768-40;      //768 - 40=728
+    pc_w            := form_w;
+    pc_h            := form_h;
+    dbgrid_w        := form_w;
+    dbgrid_h        := pc_h - 144;  //728 -104=584 //28 rows+1 field name, 29 total
+    Showmessage(IntToStr(dbgrid_h));
+    //code width 132, grouprr 256, descrr 445, uomr 150 = 983 //1024-40 v.scrollbar
+    //dbgrid_descr_w  := 445;
+    dbgrid_group_w  := 256;
+    dbgrid_descr_w  := form_w - 132 - dbgrid_group_w - 150 - 40;
+
+    //objects
+    Form1.Width                      := form_w;
+    Form1.Height                     := form_h;
+    Form1.PageControl1.Width         := pc_w;
+    Form1.PageControl1.Height        := pc_h;
+    DBGrid1.Width                    := dbgrid_w;
+    DBGrid1.Height                   := dbgrid_h;
+    DBGrid1.Columns.Items[1].Width   := dbgrid_group_w;
+    DBGrid1.Columns.Items[2].Width   := dbgrid_descr_w;
   end;
+  //WIP there
+  if screen_res = 2 then
+  begin
+    //1280х800
+    //sizes
+    form_w          := 1280-20;
+    form_h          := 800-40;
+    pc_w            := form_w;
+    pc_h            := form_h;
+    dbgrid_w        := form_w;
+    dbgrid_h        := pc_h - 104;  //800-
+    //code width 132, grouprr 256, descrr 445, uomr 150 = 983 //1024-40 v.scrollbar
+    //dbgrid_descr_w  := 445;
+    dbgrid_group_w  := 256;
+    dbgrid_descr_w  := form_w - 132 - dbgrid_group_w - 150 - 40;
+
+    //objects
+    Form1.Width                      := form_w;
+    Form1.Height                     := form_h;
+    Form1.PageControl1.Width         := pc_w;
+    Form1.PageControl1.Height        := pc_h;
+    DBGrid1.Width                    := dbgrid_w;
+    DBGrid1.Height                   := dbgrid_h;
+    DBGrid1.Columns.Items[1].Width   := dbgrid_group_w;
+    DBGrid1.Columns.Items[2].Width   := dbgrid_descr_w;
+  end;
+
+  Form1.Position:=poScreenCenter;
 end;
 
 procedure TForm1.load_translation();
@@ -191,6 +234,7 @@ begin
   Form1.rbSServices.Caption               :=  captions_local[5];
   Form1.rbSAllRecords.Caption             :=  captions_local[14];
   Form1.gbFields.Caption                  :=  captions_local[15];
+  Form1.rbAnywhere.Caption                :=  captions_local[14];
   Form1.rbGROUPR.Caption                  :=  captions_local[16];
   Form1.rbDESCRR.Caption                  :=  captions_local[17];
   Form1.PageControl1.Page[2].Caption      :=  captions_local[18];
@@ -321,7 +365,7 @@ begin
   end;
   screen_res_width  := StrToInt(editWidth.text);
   screen_res_height := StrToInt(editHeight.text);
-  //form_resize();
+  form_resize();
 
   //translations
   if rbLangRU.checked = true then
@@ -352,6 +396,7 @@ end;
 
 procedure TForm1.btSearchClick(Sender: TObject);
 begin
+  labelStatus.Visible := True;
   SQLQuery1.Close;
   SQLQuery1.SQL.Clear;
 
@@ -381,6 +426,7 @@ begin
       // somthing goes wrong, get out of here and rollback transaction
       SQLTransaction1.Rollback;
     end;
+    labelStatus.Visible := False;
 end;
 
 procedure TForm1.PageControl1Change(Sender: TObject);
