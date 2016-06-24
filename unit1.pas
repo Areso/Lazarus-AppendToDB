@@ -182,7 +182,7 @@ begin
     //code width 132, grouprr 256, descrr 445, uomr 150 = 983 //1024-40 v.scrollbar
     //dbgrid_descr_w  := 445;
     dbgrid_group_w  := 256;
-    dbgrid_descr_w  := form_w - 132 - dbgrid_group_w - 150 - 40;
+    dbgrid_descr_w  := ((form_w - 132 - dbgrid_group_w - 150 - 40) div 20) * 20;
 
     //objects
     Form1.Width                      := form_w;

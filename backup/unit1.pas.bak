@@ -168,7 +168,7 @@ begin
     DBGrid1.Columns.Items[1].Width   := dbgrid_group_w;
     DBGrid1.Columns.Items[2].Width   := dbgrid_descr_w;
   end;
-
+  //WIP there
   if screen_res = 2 then
   begin
     //1280х800
