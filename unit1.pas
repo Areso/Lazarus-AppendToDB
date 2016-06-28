@@ -168,7 +168,7 @@ begin
     DBGrid1.Columns.Items[1].Width   := dbgrid_group_w;
     DBGrid1.Columns.Items[2].Width   := dbgrid_descr_w;
   end;
-  //WIP there
+
   if screen_res = 2 then
   begin
     //1280х800
@@ -178,11 +178,89 @@ begin
     pc_w            := form_w;
     pc_h            := form_h;
     dbgrid_w        := form_w;
-    dbgrid_h        := pc_h - 104;  //800-
+    dbgrid_h        := pc_h - 144;  //800-
     //code width 132, grouprr 256, descrr 445, uomr 150 = 983 //1024-40 v.scrollbar
     //dbgrid_descr_w  := 445;
     dbgrid_group_w  := 256;
-    dbgrid_descr_w  := ((form_w - 132 - dbgrid_group_w - 150 - 40) div 20) * 20;
+    dbgrid_descr_w  := form_w - 132 - dbgrid_group_w - 150 - 40;
+
+    //objects
+    Form1.Width                      := form_w;
+    Form1.Height                     := form_h;
+    Form1.PageControl1.Width         := pc_w;
+    Form1.PageControl1.Height        := pc_h;
+    DBGrid1.Width                    := dbgrid_w;
+    DBGrid1.Height                   := dbgrid_h;
+    DBGrid1.Columns.Items[1].Width   := dbgrid_group_w;
+    DBGrid1.Columns.Items[2].Width   := dbgrid_descr_w;
+  end;
+
+  if screen_res = 3 then
+  begin
+    //1366х768
+    //sizes
+    form_w          := 1366-20;
+    form_h          := 768-40;
+    pc_w            := form_w;
+    pc_h            := form_h;
+    dbgrid_w        := form_w;
+    dbgrid_h        := pc_h - 144;  //800-
+    //code width 132, grouprr 256, descrr 445, uomr 150 = 983 //1024-40 v.scrollbar
+    //dbgrid_descr_w  := 445;
+    dbgrid_group_w  := 256;
+    dbgrid_descr_w  := form_w - 132 - dbgrid_group_w - 150 - 40;
+
+    //objects
+    Form1.Width                      := form_w;
+    Form1.Height                     := form_h;
+    Form1.PageControl1.Width         := pc_w;
+    Form1.PageControl1.Height        := pc_h;
+    DBGrid1.Width                    := dbgrid_w;
+    DBGrid1.Height                   := dbgrid_h;
+    DBGrid1.Columns.Items[1].Width   := dbgrid_group_w;
+    DBGrid1.Columns.Items[2].Width   := dbgrid_descr_w;
+  end;
+
+  if screen_res = 4 then
+  begin
+    //1366х768
+    //sizes
+    form_w          := 1920-20;
+    form_h          := 1080-40;
+    pc_w            := form_w;
+    pc_h            := form_h;
+    dbgrid_w        := form_w;
+    dbgrid_h        := pc_h - 144;  //800-
+    //code width 132, grouprr 256, descrr 445, uomr 150 = 983 //1024-40 v.scrollbar
+    //dbgrid_descr_w  := 445;
+    dbgrid_group_w  := 256;
+    dbgrid_descr_w  := form_w - 132 - dbgrid_group_w - 150 - 40;
+
+    //objects
+    Form1.Width                      := form_w;
+    Form1.Height                     := form_h;
+    Form1.PageControl1.Width         := pc_w;
+    Form1.PageControl1.Height        := pc_h;
+    DBGrid1.Width                    := dbgrid_w;
+    DBGrid1.Height                   := dbgrid_h;
+    DBGrid1.Columns.Items[1].Width   := dbgrid_group_w;
+    DBGrid1.Columns.Items[2].Width   := dbgrid_descr_w;
+  end;
+
+  if screen_res = 5 then
+  begin
+    //1366х768
+    //sizes
+    form_w          := screen_res_width -20;
+    form_h          := screen_res_height -40;
+    pc_w            := form_w;
+    pc_h            := form_h;
+    dbgrid_w        := form_w;
+    dbgrid_h        := pc_h - 144;  //800-
+    //code width 132, grouprr 256, descrr 445, uomr 150 = 983 //1024-40 v.scrollbar
+    //dbgrid_descr_w  := 445;
+    dbgrid_group_w  := 256;
+    dbgrid_descr_w  := form_w - 132 - dbgrid_group_w - 150 - 40;
 
     //objects
     Form1.Width                      := form_w;
@@ -409,23 +487,37 @@ begin
   If rbSAllRecords.Checked Then
     ins_type:=3;
 
+  If rbAnywhere.Checked = True Then
+  begin
   SQLQuery1.SQL.Text := ' SELECT * FROM MAIN WHERE GROUPR LIKE '
     +'''%'+editSearchQuery.Text+'%'''+' UNION ' +
     ' SELECT * FROM MAIN WHERE DESCRR LIKE '
     +'''%'+editSearchQuery.Text+'%''';
- // edit1.text:=                   SQLQuery1.SQL.Text;
+  end;
+  If rbGROUPR.Checked = True Then
+  begin
+  SQLQuery1.SQL.Text := ' SELECT * FROM MAIN WHERE GROUPR LIKE '
+    +'''%'+editSearchQuery.Text+'%''';
+  end;
+  If rbDESCRR.Checked = True Then
+  begin
+  SQLQuery1.SQL.Text := ' SELECT * FROM MAIN WHERE DESCR LIKE '
+    +'''%'+editSearchQuery.Text+'%''';
+  end;
 
-    DBConnection.Connected  := True;
-    // IF DataSet is open then transaction should be Commit and started again
-    If SQLTransaction1.Active Then SQLTransaction1.Commit;
-    SQLTransaction1.StartTransaction;
-    Try
-      //// try open DataSet
-      SQLQuery1.Open;
-    Except
-      // somthing goes wrong, get out of here and rollback transaction
-      SQLTransaction1.Rollback;
-    end;
+  // edit1.text:=                   SQLQuery1.SQL.Text;
+
+  DBConnection.Connected  := True;
+  // IF DataSet is open then transaction should be Commit and started again
+  If SQLTransaction1.Active Then SQLTransaction1.Commit;
+  SQLTransaction1.StartTransaction;
+  Try
+    //// try open DataSet
+    SQLQuery1.Open;
+  Except
+    // somthing goes wrong, get out of here and rollback transaction
+    SQLTransaction1.Rollback;
+  end;
     labelStatus.Visible := False;
 end;
 
