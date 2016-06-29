@@ -93,7 +93,7 @@ object Form1: TForm1
         TabOrder = 2
       end
       object DBGrid1: TDBGrid
-        Left = -4
+        Left = -8
         Height = 584
         Top = 120
         Width = 1024
@@ -142,6 +142,7 @@ object Form1: TForm1
         Width = 80
         TabOrder = 4
         Text = 'Edit1'
+        Visible = False
       end
       object gbFields: TGroupBox
         Left = 512
@@ -192,6 +193,16 @@ object Form1: TForm1
         Font.Quality = fqDraft
         ParentColor = False
         ParentFont = False
+        Visible = False
+      end
+      object Button1: TButton
+        Left = 220
+        Height = 25
+        Top = 19
+        Width = 75
+        Caption = 'Button1'
+        OnClick = Button1Click
+        TabOrder = 6
         Visible = False
       end
     end

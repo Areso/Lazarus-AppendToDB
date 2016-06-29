@@ -25,6 +25,7 @@ type
     btSearch: TButton;
     btClearDB: TButton;
     btSaveSettings: TButton;
+    Button1: TButton;
     DataSource1: TDataSource;
     DBConnection: TIBConnection;
     DBGrid1: TDBGrid;
@@ -72,6 +73,7 @@ type
     procedure btReadClick(Sender: TObject);
     procedure btSaveSettingsClick(Sender: TObject);
     procedure btSearchClick(Sender: TObject);
+    procedure Button1Click(Sender: TObject);
     procedure PageControl1Change(Sender: TObject);
     procedure rbLangENChange(Sender: TObject);
     procedure rbLangKZChange(Sender: TObject);
@@ -489,23 +491,59 @@ begin
 
   If rbAnywhere.Checked = True Then
   begin
-  SQLQuery1.SQL.Text := ' SELECT * FROM MAIN WHERE GROUPR LIKE '
-    +'''%'+editSearchQuery.Text+'%'''+' UNION ' +
-    ' SELECT * FROM MAIN WHERE DESCRR LIKE '
-    +'''%'+editSearchQuery.Text+'%''';
+    SQLQuery1.SQL.Text := ' SELECT * FROM MAIN WHERE GROUPR LIKE '
+      +'''%'+editSearchQuery.Text+'%'''+' UNION ' +
+      ' SELECT * FROM MAIN WHERE DESCRR LIKE '
+      +'''%'+editSearchQuery.Text+'%''';
+    If rbSGoodies.Checked = True Then
+    begin
+      SQLQuery1.SQL.Text := SQLQuery1.SQL.Text +' WHERE INS_TYPE = 0'
+    end;
+    If rbSJobs.Checked = True Then
+    begin
+      SQLQuery1.SQL.Text := SQLQuery1.SQL.Text +' WHERE INS_TYPE = 1'
+    end;
+    If rbSServices.Checked = True Then
+    begin
+      SQLQuery1.SQL.Text := SQLQuery1.SQL.Text +' WHERE INS_TYPE = 2'
+    end;
   end;
-  If rbGROUR.Checked = True Then
+  If rbGROUPR.Checked = True Then
   begin
-  SQLQuery1.SQL.Text := ' SELECT * FROM MAIN WHERE GROUPR LIKE '
-    +'''%'+editSearchQuery.Text+'%''';
+    SQLQuery1.SQL.Text := ' SELECT * FROM MAIN WHERE GROUPR LIKE '
+      +'''%'+editSearchQuery.Text+'%''';
+    If rbSGoodies.Checked = True Then
+    begin
+      SQLQuery1.SQL.Text := SQLQuery1.SQL.Text +' WHERE INS_TYPE = 0'
+    end;
+    If rbSJobs.Checked = True Then
+    begin
+      SQLQuery1.SQL.Text := SQLQuery1.SQL.Text +' WHERE INS_TYPE = 1'
+    end;
+    If rbSServices.Checked = True Then
+    begin
+      SQLQuery1.SQL.Text := SQLQuery1.SQL.Text +' WHERE INS_TYPE = 2'
+    end;
   end;
   If rbDESCRR.Checked = True Then
   begin
-  SQLQuery1.SQL.Text := ' SELECT * FROM MAIN WHERE DESCR LIKE '
-    +'''%'+editSearchQuery.Text+'%''';
+    SQLQuery1.SQL.Text := ' SELECT * FROM MAIN WHERE DESCRR LIKE '
+      +'''%'+editSearchQuery.Text+'%''';
+    If rbSGoodies.Checked = True Then
+    begin
+      SQLQuery1.SQL.Text := SQLQuery1.SQL.Text +' WHERE INS_TYPE = 0'
+    end;
+    If rbSJobs.Checked = True Then
+    begin
+      SQLQuery1.SQL.Text := SQLQuery1.SQL.Text +' WHERE INS_TYPE = 1'
+    end;
+    If rbSServices.Checked = True Then
+    begin
+      SQLQuery1.SQL.Text := SQLQuery1.SQL.Text +' WHERE INS_TYPE = 2'
+    end;
   end;
 
-  // edit1.text:=                   SQLQuery1.SQL.Text;
+   //edit1.text:=                   SQLQuery1.SQL.Text;
 
   DBConnection.Connected  := True;
   // IF DataSet is open then transaction should be Commit and started again
@@ -519,6 +557,14 @@ begin
     SQLTransaction1.Rollback;
   end;
     labelStatus.Visible := False;
+end;
+
+procedure TForm1.Button1Click(Sender: TObject);
+begin
+  ShowMessage(DBConnection.Hostname);
+  ShowMessage(DBConnection.DatabaseName);
+  ShowMessage(DBConnection.Username);
+  ShowMessage(DBConnection.Password);
 end;
 
 procedure TForm1.PageControl1Change(Sender: TObject);
