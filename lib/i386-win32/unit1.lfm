@@ -19,7 +19,6 @@ object Form1: TForm1
     ActivePage = tsSearch
     TabIndex = 0
     TabOrder = 0
-    OnChange = PageControl1Change
     object tsSearch: TTabSheet
       Caption = 'Search'
       ClientHeight = 700
@@ -142,6 +141,7 @@ object Form1: TForm1
         Width = 80
         TabOrder = 4
         Text = 'Edit1'
+        Visible = False
       end
       object gbFields: TGroupBox
         Left = 512
@@ -202,6 +202,7 @@ object Form1: TForm1
         Caption = 'Button1'
         OnClick = Button1Click
         TabOrder = 6
+        Visible = False
       end
     end
     object tsInsert: TTabSheet
@@ -282,6 +283,7 @@ object Form1: TForm1
         Top = 408
         Width = 179
         Caption = 'Clear the database'
+        OnClick = btClearDBClick
         TabOrder = 4
       end
     end

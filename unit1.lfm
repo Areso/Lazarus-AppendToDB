@@ -19,7 +19,6 @@ object Form1: TForm1
     ActivePage = tsSearch
     TabIndex = 0
     TabOrder = 0
-    OnChange = PageControl1Change
     object tsSearch: TTabSheet
       Caption = 'Search'
       ClientHeight = 700
@@ -284,6 +283,7 @@ object Form1: TForm1
         Top = 408
         Width = 179
         Caption = 'Clear the database'
+        OnClick = btClearDBClick
         TabOrder = 4
       end
     end

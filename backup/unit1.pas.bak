@@ -1,7 +1,7 @@
 {
  This is free programm under GPLv2 (or later - as option) license.
  Authors: Anton Gladyshev
- version 1.0.0.4, date 2016-06-21
+ version 1.0.0.5, date 2016-07-01
                       (YYYY-MM-DD)
 }
 unit Unit1;
@@ -13,7 +13,7 @@ interface
 uses
   Classes, SysUtils, IBConnection, sqldb, db, FileUtil, Forms, Controls,
   Graphics, Dialogs, StdCtrls, ExtCtrls, ComCtrls, DBGrids, LazUtils,
-  LConvEncoding;
+  LConvEncoding, LCLType;
 
 
 type
@@ -70,11 +70,11 @@ type
     SQLQuery1: TSQLQuery;
     SQLTransaction1: TSQLTransaction;
     editSearchQuery: TEdit;
+    procedure btClearDBClick(Sender: TObject);
     procedure btReadClick(Sender: TObject);
     procedure btSaveSettingsClick(Sender: TObject);
     procedure btSearchClick(Sender: TObject);
     procedure Button1Click(Sender: TObject);
-    procedure PageControl1Change(Sender: TObject);
     procedure rbLangENChange(Sender: TObject);
     procedure rbLangKZChange(Sender: TObject);
     procedure rbLangOtherChange(Sender: TObject);
@@ -93,12 +93,13 @@ type
   public
     procedure load_translation();
     procedure form_resize();
+    procedure save_settings();
+    procedure set_visible();
     { public declarations }
   end;
 
 var
   Form1:          TForm1;
-//  f:             text;
   f_code:         text;
   f_groupr:       text;
   f_descrr:       text;
@@ -114,7 +115,6 @@ var
   serv_i2:        integer;
   f2:             text;//settings are there
   f_lang:         text;//translations are there
- // f3:            text;
   role:           widestring;
   HostNameDB:     widestring;
   DBName:         widestring;
@@ -130,9 +130,18 @@ var
   warning:        widestring;
   ins_type:       integer;
   captions_local: array[0..26] of widestring; //total 26+1 lines
+  statusvisible:  boolean;
 implementation
 
 {$R *.lfm}
+procedure TForm1.set_visible();
+begin
+  if statusvisible = True then
+    labelStatus.Visible := True;
+  if statusvisible = False then
+    labelStatus.Visible := False;
+end;
+
 procedure TForm1.form_resize();
 var
   form_w:         integer;
@@ -328,6 +337,29 @@ begin
   Form1.btSaveSettings.Caption            :=  captions_local[26];
 end;
 
+procedure TForm1.save_settings();
+begin
+  Try
+    rewrite(f2);
+    //DB settings
+    writeln(f2, role); //now we keep calm and load our role
+    //role := UTF8BOMToUTF8(role);
+    writeln(f2, HostNameDB);
+    writeln(f2, DBName);
+    writeln(f2, DBUsername);
+    writeln(f2, DBPassword);
+    //program options
+    writeln(f2, screen_res);
+    writeln(f2, screen_res_width);
+    writeln(f2, screen_res_height);
+    writeln(f2, language_rb);
+    writeln(f2, language_str);
+  Except
+    //HALT
+  end;
+  CloseFile(f2);
+end;
+
 procedure TForm1.reading();
 begin
   FileForRead := editFile.Text;
@@ -420,6 +452,30 @@ begin
   inserting();
 end;
 
+procedure TForm1.btClearDBClick(Sender: TObject);
+var
+  t_caption:  widestring;
+  t_question: PChar;
+begin
+  //t_question:= PWideChar(captions_local[8]);
+  //t_caption := captions_local[0];
+  //If Application.MessageBox('ыгорка', t_caption, MB_ICONQUESTION + MB_YESNO)=IDYES then
+  //begin
+    SQLQuery1.SQL.Text := 'DELETE FROM MAIN';
+    DBConnection.Connected  := True;
+    // IF DataSet is open then transaction should be Commit and started again
+    If SQLTransaction1.Active Then SQLTransaction1.Commit;
+    SQLTransaction1.StartTransaction;
+    Try
+      //// try open DataSet
+      SQLQuery1.ExecSQL;
+    Except
+      // somthing goes wrong, get out of here and rollback transaction
+      SQLTransaction1.Rollback;
+    end;
+  //end;
+end;
+
 procedure TForm1.btSaveSettingsClick(Sender: TObject);
 begin
   //form resize
@@ -471,12 +527,14 @@ begin
   language_str  := editLang.text;
   load_translation();
 
-  //save options
+  save_settings();
 end;
 
 procedure TForm1.btSearchClick(Sender: TObject);
 begin
-  labelStatus.Visible := True;
+  statusvisible := True;
+  set_visible();
+
   SQLQuery1.Close;
   SQLQuery1.SQL.Clear;
 
@@ -556,7 +614,9 @@ begin
     // somthing goes wrong, get out of here and rollback transaction
     SQLTransaction1.Rollback;
   end;
-    labelStatus.Visible := False;
+
+  statusvisible := False;
+  set_visible();
 end;
 
 procedure TForm1.Button1Click(Sender: TObject);
@@ -565,11 +625,6 @@ begin
   ShowMessage(DBConnection.DatabaseName);
   ShowMessage(DBConnection.Username);
   ShowMessage(DBConnection.Password);
-end;
-
-procedure TForm1.PageControl1Change(Sender: TObject);
-begin
-
 end;
 
 procedure TForm1.rbLangENChange(Sender: TObject);
@@ -710,7 +765,7 @@ begin
     reset(f2);
     //DB settings
     readln(f2, role); //now we keep calm and load our role
-    role := UTF8BOMToUTF8(role);
+    //role := UTF8BOMToUTF8(role);
     readln(f2, HostNameDB);
     readln(f2, DBName);
     readln(f2, DBUsername);
@@ -724,6 +779,8 @@ begin
   Except
     //HALT
   end;
+  CloseFile(f2);
+
   DBConnection.HostName       := HostNameDB;
   DBConnection.DatabaseName   := DBName;
   DBConnection.UserName       := DBUsername;
@@ -813,8 +870,8 @@ begin
   //ShowMessage(IntToStr(language_rb));
   //ShowMessage(lang);
 
-  //call form_resizer();
   load_translation();
+  form_resize();
 End;
 
 end.

@@ -1,4 +1,0 @@
-execute block as begin 
- INSERT INTO MAIN (CODE,GROUPR,DESCRR,UOM) VALUES ('cd','Pen','Pen ballpoint','edini');
- end
-

@@ -15,7 +15,10 @@
       <EnableI18N LFM="False"/>
     </i18n>
     <VersionInfo>
-      <StringTable ProductVersion=""/>
+      <UseVersionInfo Value="True"/>
+      <MajorVersionNr Value="1"/>
+      <BuildNr Value="5"/>
+      <StringTable CompanyName="Anton Gladyshev" FileDescription="KTRU searcher" InternalName="KTRU.exe" LegalCopyright="Anton Gladyshv" OriginalFilename="KTRU.exe" ProductName="KTRU searcher"/>
     </VersionInfo>
     <BuildModes Count="1">
       <Item1 Name="Default" Default="True"/>

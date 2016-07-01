@@ -1,0 +1,3 @@
+1. make status label shows correctly
+2. make warning message shows with correctly messaging. There are a problem
+ with unicode. PChar(Windestring), which contains Unicode non-latinic gives a shit as output.
