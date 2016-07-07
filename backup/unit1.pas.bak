@@ -1,7 +1,7 @@
 {
  This is free programm under GPLv2 (or later - as option) license.
  Authors: Anton Gladyshev
- version 1.0.0.5, date 2016-07-01
+ version 1.0.0.6, date 2016-07-07
                       (YYYY-MM-DD)
 }
 unit Unit1;

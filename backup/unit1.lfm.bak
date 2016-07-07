@@ -16,8 +16,8 @@ object Form1: TForm1
     Height = 728
     Top = 0
     Width = 1024
-    ActivePage = tsInsert
-    TabIndex = 1
+    ActivePage = tsSearch
+    TabIndex = 0
     TabOrder = 0
     object tsSearch: TTabSheet
       Caption = 'Search'
