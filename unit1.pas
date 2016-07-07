@@ -1,7 +1,7 @@
 {
  This is free programm under GPLv2 (or later - as option) license.
  Authors: Anton Gladyshev
- version 1.0.0.5, date 2016-07-01
+ version 1.0.0.6, date 2016-07-07
                       (YYYY-MM-DD)
 }
 unit Unit1;
@@ -13,7 +13,7 @@ interface
 uses
   Classes, SysUtils, IBConnection, sqldb, db, FileUtil, Forms, Controls,
   Graphics, Dialogs, StdCtrls, ExtCtrls, ComCtrls, DBGrids, LazUtils,
-  LConvEncoding, LCLType;
+  LConvEncoding, LCLType, types;
 
 
 type
@@ -87,6 +87,8 @@ type
     procedure reading();
     procedure inserting();
     procedure FormCreate(Sender: TObject);
+    procedure tsInsertContextPopup(Sender: TObject; MousePos: TPoint;
+      var Handled: Boolean);
 
   private
     { private declarations }
@@ -448,8 +450,15 @@ end;
 
 procedure TForm1.btReadClick(Sender: TObject);
 begin
-  reading();
-  inserting();
+  if role = 'admin' then
+  begin
+    reading();
+    inserting();
+  end
+  else
+  begin
+    ShowMessage(captions_local[8]);
+  end;
 end;
 
 procedure TForm1.btClearDBClick(Sender: TObject);
@@ -457,23 +466,30 @@ var
   t_caption:  widestring;
   t_question: PChar;
 begin
-  //t_question:= PWideChar(captions_local[8]);
-  //t_caption := captions_local[0];
-  //If Application.MessageBox('ыгорка', t_caption, MB_ICONQUESTION + MB_YESNO)=IDYES then
-  //begin
-      SQLQuery1.SQL.Text := 'DELETE FROM MAIN';
-      DBConnection.Connected  := True;
-      // IF DataSet is open then transaction should be Commit and started again
-      If SQLTransaction1.Active Then SQLTransaction1.Commit;
-      SQLTransaction1.StartTransaction;
-      Try
-        //// try open DataSet
-        SQLQuery1.ExecSQL;
-      Except
-        // somthing goes wrong, get out of here and rollback transaction
-        SQLTransaction1.Rollback;
-      end;
-  //end;
+  if role = 'admin' then
+  begin
+    //t_question:= PWideChar(captions_local[8]);
+    //t_caption := captions_local[0];
+    //If Application.MessageBox('ыгорка', t_caption, MB_ICONQUESTION + MB_YESNO)=IDYES then
+    //begin
+        SQLQuery1.SQL.Text := 'DELETE FROM MAIN';
+        DBConnection.Connected  := True;
+        // IF DataSet is open then transaction should be Commit and started again
+        If SQLTransaction1.Active Then SQLTransaction1.Commit;
+        SQLTransaction1.StartTransaction;
+        Try
+          //// try open DataSet
+          SQLQuery1.ExecSQL;
+        Except
+          // somthing goes wrong, get out of here and rollback transaction
+          SQLTransaction1.Rollback;
+        end;
+    //end;
+  end
+  else
+  begin
+    ShowMessage(captions_local[8]);
+  end;
 end;
 
 procedure TForm1.btSaveSettingsClick(Sender: TObject);
@@ -873,6 +889,12 @@ begin
   load_translation();
   form_resize();
 End;
+
+procedure TForm1.tsInsertContextPopup(Sender: TObject; MousePos: TPoint;
+  var Handled: Boolean);
+begin
+
+end;
 
 end.
 

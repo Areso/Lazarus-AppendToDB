@@ -6,7 +6,7 @@ Jobs
 Services
 Read and Insert
 Clear the database
-Are you sure?
+You're should be logged as admin for that
 Search
 Search query
 Search
