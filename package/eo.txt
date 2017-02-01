@@ -1,0 +1,28 @@
+Katologo butikajxojn laborojn kaj komplezojn
+Insertago
+Filon nomo-prefikso
+butikajxoj
+laboroj
+komplezoj
+legi kaj inserti
+sensxeligi datumbazon
+Por acti, envenu kiel admin
+sercxo
+Sercxa interpelacio
+Sercxi
+Sercxo en proceso
+Kategorio
+Cxie
+Sercxi en
+Grupoj
+Priskriboj
+Agordiloj
+Distingivo ekranon
+alia distingivo
+Langoj
+rusa
+angla
+kazaha
+alia, 2-litera kodo
+Alpreni kaj savi
+Sercxo interpelacio estas malplena

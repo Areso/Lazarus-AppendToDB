@@ -13,7 +13,7 @@ uses
 {$R *.res}
 
 begin
-  Application.Title:='AppendToDB';
+  Application.Title:='KTRU';
   RequireDerivedFormResource := True;
   Application.Initialize;
   Application.CreateForm(TForm1, Form1);

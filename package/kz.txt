@@ -1,0 +1,28 @@
+KTRU
+Insert
+Filename-prefix
+Goodies
+Jobs
+Services
+Read and Insert
+Clear the database
+You're should be logged as admin for that
+Search
+Search query
+Search
+Search is going
+Categories
+All of them
+Search in
+GROUPR
+DESCRR
+Options
+Screen resolution
+other resolution
+Languages
+Russian
+English
+Kazakh
+other, 2-letter abrv
+Apply and Save
+Search query is empty

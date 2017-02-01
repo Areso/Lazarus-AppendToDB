@@ -99,11 +99,11 @@ object Form1: TForm1
         Color = clWindow
         Columns = <        
           item
-            MinSize = 132
-            MaxSize = 132
+            MinSize = 140
+            MaxSize = 140
             SizePriority = 0
             Title.Caption = 'CODE'
-            Width = 132
+            Width = 140
             FieldName = 'CODE'
           end        
           item
@@ -443,20 +443,6 @@ object Form1: TForm1
       end
     end
   end
-  object DBConnection: TIBConnection
-    Connected = False
-    LoginPrompt = False
-    DatabaseName = 'mydbKTRU2'
-    KeepConnection = False
-    Password = 'masterkey'
-    Transaction = SQLTransaction1
-    UserName = 'SYSDBA'
-    CharSet = 'UTF8'
-    HostName = 'localhost'
-    LogEvents = []
-    left = 792
-    top = 168
-  end
   object SQLQuery1: TSQLQuery
     FieldDefs = <>
     Database = DBConnection
@@ -475,5 +461,16 @@ object Form1: TForm1
     DataSet = SQLQuery1
     left = 792
     top = 228
+  end
+  object DBConnection: TSQLite3Connection
+    Connected = True
+    LoginPrompt = False
+    DatabaseName = 'KTRU.db'
+    KeepConnection = False
+    Transaction = SQLTransaction1
+    LogEvents = []
+    Options = []
+    left = 788
+    top = 194
   end
 end

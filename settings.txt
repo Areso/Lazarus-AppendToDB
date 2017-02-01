@@ -7,4 +7,4 @@ masterkey
 1680
 1050
 1
-eo
+ru

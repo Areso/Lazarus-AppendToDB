@@ -1,0 +1,10 @@
+user
+192.168.112.54
+mydbKTRU2
+SYSDBA
+masterkey
+2
+1680
+1050
+4
+eo

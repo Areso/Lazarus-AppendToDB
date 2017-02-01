@@ -1,3 +1,5 @@
+2017-01-07 1.0.0.8
+Migrated to SQLite database, fixed categories (earlier doesn't apply), tab Inserting now is not visible for users
 2016-07-07 1.0.0.6
 Now it requires admin user for clear and insert into database
 2016-07-01 1.0.0.5 

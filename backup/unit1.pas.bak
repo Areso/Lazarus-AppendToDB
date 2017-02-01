@@ -1,7 +1,7 @@
 {
  This is free programm under GPLv2 (or later - as option) license.
  Authors: Anton Gladyshev
- version 1.0.0.6, date 2016-07-07
+ version 1.0.0.8, date 2017-01-07
                       (YYYY-MM-DD)
 }
 unit Unit1;
@@ -11,8 +11,8 @@ unit Unit1;
 interface
 
 uses
-  Classes, SysUtils, IBConnection, sqldb, db, FileUtil, Forms, Controls,
-  Graphics, Dialogs, StdCtrls, ExtCtrls, ComCtrls, DBGrids, LazUtils,
+  Classes, SysUtils, IBConnection, sqldb, sqlite3conn, db, FileUtil, Forms,
+  Controls, Graphics, Dialogs, StdCtrls, ExtCtrls, ComCtrls, DBGrids, LazUtils,
   LConvEncoding, LCLType, types;
 
 
@@ -27,7 +27,6 @@ type
     btSaveSettings: TButton;
     Button1: TButton;
     DataSource1: TDataSource;
-    DBConnection: TIBConnection;
     DBGrid1: TDBGrid;
     Edit1: TEdit;
     editHeight: TEdit;
@@ -64,6 +63,7 @@ type
     gbCategories: TGroupBox;
     Services: TRadioButton;
     rbSServices: TRadioButton;
+    DBConnection: TSQLite3Connection;
     tsOptions: TTabSheet;
     tsInsert: TTabSheet;
     tsSearch: TTabSheet;
@@ -133,6 +133,8 @@ var
   ins_type:       integer;
   captions_local: array[0..26] of widestring; //total 26+1 lines
   statusvisible:  boolean;
+  queryGroup:     widestring;
+  queryDescr:     widestring;
 implementation
 
 {$R *.lfm}
@@ -296,7 +298,7 @@ begin
   AssignFile(f_lang, lang+'.txt');
   Try
     reset(f_lang);
-    While cnt<28 Do //total lines count(26+1) + 1
+    While cnt<29 Do //total lines count(27+1) + 1
     begin
       readln(f_lang,captions_local[cnt]);
       cnt:=cnt+1;
@@ -548,6 +550,10 @@ end;
 
 procedure TForm1.btSearchClick(Sender: TObject);
 begin
+  If EditSearchQuery.Text <> '' then
+  begin
+
+
   statusvisible := True;
   set_visible();
 
@@ -565,59 +571,65 @@ begin
 
   If rbAnywhere.Checked = True Then
   begin
-    SQLQuery1.SQL.Text := ' SELECT * FROM MAIN WHERE GROUPR LIKE '
-      +'''%'+editSearchQuery.Text+'%'''+' UNION ' +
-      ' SELECT * FROM MAIN WHERE DESCRR LIKE '
+    queryGroup := ' SELECT * FROM MAIN WHERE GROUPR LIKE '
+      +'''%'+editSearchQuery.Text+'%''';
+    queryDescr := ' SELECT * FROM MAIN WHERE DESCRR LIKE '
       +'''%'+editSearchQuery.Text+'%''';
     If rbSGoodies.Checked = True Then
     begin
-      SQLQuery1.SQL.Text := SQLQuery1.SQL.Text +' WHERE INS_TYPE = 0'
+      queryGroup := queryGroup +' AND INS_TYPE = 0';
+      queryDescr := queryDescr +' AND INS_TYPE = 0';
     end;
     If rbSJobs.Checked = True Then
     begin
-      SQLQuery1.SQL.Text := SQLQuery1.SQL.Text +' WHERE INS_TYPE = 1'
+      queryGroup := queryGroup +' AND INS_TYPE = 1';
+      queryDescr := queryDescr +' AND INS_TYPE = 1';
     end;
     If rbSServices.Checked = True Then
     begin
-      SQLQuery1.SQL.Text := SQLQuery1.SQL.Text +' WHERE INS_TYPE = 2'
+      queryGroup := queryGroup +' AND INS_TYPE = 2';
+      queryDescr := queryDescr +' AND INS_TYPE = 2';
     end;
+    SQLQuery1.SQL.Text :=queryGroup +' UNION ' + queryDescr;
   end;
   If rbGROUPR.Checked = True Then
   begin
-    SQLQuery1.SQL.Text := ' SELECT * FROM MAIN WHERE GROUPR LIKE '
+    queryGroup  := ' SELECT * FROM MAIN WHERE GROUPR LIKE '
       +'''%'+editSearchQuery.Text+'%''';
     If rbSGoodies.Checked = True Then
     begin
-      SQLQuery1.SQL.Text := SQLQuery1.SQL.Text +' WHERE INS_TYPE = 0'
+      queryGroup := queryGroup +' AND INS_TYPE = 0';
     end;
     If rbSJobs.Checked = True Then
     begin
-      SQLQuery1.SQL.Text := SQLQuery1.SQL.Text +' WHERE INS_TYPE = 1'
+      queryGroup := queryGroup +' AND INS_TYPE = 1';
     end;
     If rbSServices.Checked = True Then
     begin
-      SQLQuery1.SQL.Text := SQLQuery1.SQL.Text +' WHERE INS_TYPE = 2'
+      queryGroup := queryGroup +' AND INS_TYPE = 2';
     end;
+    SQLQuery1.SQL.Text := queryGroup;
   end;
   If rbDESCRR.Checked = True Then
   begin
-    SQLQuery1.SQL.Text := ' SELECT * FROM MAIN WHERE DESCRR LIKE '
+    queryDescr := ' SELECT * FROM MAIN WHERE DESCRR LIKE '
       +'''%'+editSearchQuery.Text+'%''';
     If rbSGoodies.Checked = True Then
     begin
-      SQLQuery1.SQL.Text := SQLQuery1.SQL.Text +' WHERE INS_TYPE = 0'
+      queryDescr := queryDescr +' AND INS_TYPE = 0';
     end;
     If rbSJobs.Checked = True Then
     begin
-      SQLQuery1.SQL.Text := SQLQuery1.SQL.Text +' WHERE INS_TYPE = 1'
+      queryDescr := queryDescr +' AND INS_TYPE = 1';
     end;
     If rbSServices.Checked = True Then
     begin
-      SQLQuery1.SQL.Text := SQLQuery1.SQL.Text +' WHERE INS_TYPE = 2'
+      queryDescr := queryDescr +' AND INS_TYPE = 2';
     end;
+    SQLQuery1.SQL.Text := queryDescr;
   end;
 
-   //edit1.text:=                   SQLQuery1.SQL.Text;
+   edit1.text:=                   SQLQuery1.SQL.Text;
 
   DBConnection.Connected  := True;
   // IF DataSet is open then transaction should be Commit and started again
@@ -633,6 +645,12 @@ begin
 
   statusvisible := False;
   set_visible();
+
+  end
+  else
+  begin
+    ShowMessage(captions_local[27]);
+  end;
 end;
 
 procedure TForm1.Button1Click(Sender: TObject);
@@ -796,6 +814,12 @@ begin
     //HALT
   end;
   CloseFile(f2);
+  ShowMessage(role);
+  if role <> 'admin' then
+  begin
+    ShowMessage(role);
+    PageControl1.Pages[1].TabVisible:=False;
+  end;
 
   DBConnection.HostName       := HostNameDB;
   DBConnection.DatabaseName   := DBName;

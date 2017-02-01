@@ -25,3 +25,4 @@ English
 Kazakh
 other, 2-letter abrv
 Apply and Save
+Search query is empty

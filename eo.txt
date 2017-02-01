@@ -1,27 +1,28 @@
-Классификатор товаров работ услуг
-Вставка
-Имя файла-префикс
-Товары
-Работы
-Услуги
-Прочитать и вставить
-Очистить базу данных
-Чтобы произвести действие, войдите как админ
-Поиск
-Поисковый запрос
-Искать
-В процессе поиска
-Категории
-Везде
-Искать в
-Группах
-Описаниях
-Настройки
-Разрешение экрана
-другое разрешение
-Языки
-русский
-английский
-казахский
-другой, 2-букв сокращ
-Применить и сохранить
+Katologo butikajxojn laborojn kaj komplezojn
+Insertago
+Filon nomo-prefikso
+butikajxoj
+laboroj
+komplezoj
+legi kaj inserti
+sensxeligi datumbazon
+Por acti, envenu kiel admin
+sercxo
+Sercxa interpelacio
+Sercxi
+Sercxo en proceso
+Kategorio
+Cxie
+Sercxi en
+Grupoj
+Priskriboj
+Agordiloj
+Distingivo ekranon
+alia distingivo
+Langoj
+rusa
+angla
+kazaha
+alia, 2-litera kodo
+Alpreni kaj savi
+Sercxo interpelacio estas malplena

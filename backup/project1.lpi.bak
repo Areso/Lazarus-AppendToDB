@@ -6,7 +6,7 @@
     <General>
       <SessionStorage Value="InProjectDir"/>
       <MainUnit Value="0"/>
-      <Title Value="AppendToDB"/>
+      <Title Value="KTRU"/>
       <ResourceType Value="res"/>
       <UseXPManifest Value="True"/>
       <Icon Value="0"/>
@@ -17,8 +17,8 @@
     <VersionInfo>
       <UseVersionInfo Value="True"/>
       <MajorVersionNr Value="1"/>
-      <BuildNr Value="6"/>
-      <StringTable CompanyName="Anton Gladyshev" FileDescription="KTRU searcher" InternalName="KTRU.exe" LegalCopyright="Anton Gladyshev" LegalTrademarks="Anton Gladyshev" OriginalFilename="KTRU.exe" ProductName="KTRU searcher"/>
+      <BuildNr Value="8"/>
+      <StringTable CompanyName="Anton Gladyshev" FileDescription="KTRU searcher" InternalName="KTRU.exe" LegalCopyright="Anton Gladyshev" LegalTrademarks="Anton Gladyshev" OriginalFilename="KTRU.exe" ProductName="KTRU searcher" ProductVersion=""/>
     </VersionInfo>
     <BuildModes Count="1">
       <Item1 Name="Default" Default="True"/>
