@@ -167,7 +167,7 @@ begin
     pc_h            := form_h;
     dbgrid_w        := form_w;
     dbgrid_h        := pc_h - 144;  //728 -104=584 //28 rows+1 field name, 29 total
-    Showmessage(IntToStr(dbgrid_h));
+    //Showmessage(IntToStr(dbgrid_h));
     //code width 132, grouprr 256, descrr 445, uomr 150 = 983 //1024-40 v.scrollbar
     //dbgrid_descr_w  := 445;
     dbgrid_group_w  := 256;

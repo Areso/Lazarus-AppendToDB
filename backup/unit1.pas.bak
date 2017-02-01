@@ -814,10 +814,10 @@ begin
     //HALT
   end;
   CloseFile(f2);
-  ShowMessage(role);
+
   if role <> 'admin' then
   begin
-    ShowMessage(role);
+
     PageControl1.Pages[1].TabVisible:=False;
   end;
 
